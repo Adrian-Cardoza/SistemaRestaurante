@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SistemaRestaurante.Models
 {
-    public class Mesas
+    public class Mesa
     {
         [Key]
         public int Id { get; set; }
@@ -20,6 +20,6 @@ namespace SistemaRestaurante.Models
         [MaxLength(20)]
         public string Estado { get; set; }
 
-        public List<Pedidos> Pedidos { get; set; } = new();
+        public List<Pedido> Pedidos { get; set; } = new();
     }
 }

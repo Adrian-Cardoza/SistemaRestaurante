@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SistemaRestaurante.Models
 {
-    public class Productos
+    public class Producto
     {
         [Key]
         public int ID { get; set; }
@@ -26,6 +26,6 @@ namespace SistemaRestaurante.Models
         [Required]
         public bool Disponible { get; set; }
 
-        public List<DetallesPedidos> DetallesPedidos { get; set; } = new();
+        public List<DetallePedido> DetallesPedidos { get; set; } = new();
     }
 }
