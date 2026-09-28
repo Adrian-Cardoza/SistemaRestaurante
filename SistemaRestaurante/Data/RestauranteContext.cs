@@ -1,11 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante.Config;
 using SistemaRestaurante.Models;
 
 namespace SistemaRestaurante.Data
 {
 	public class RestauranteContext : DbContext
 	{
-		public DbSet<Empleado> Empleados { get; set; }
+        public RestauranteContext() { }
+
+        public RestauranteContext(DbContextOptions<RestauranteContext> options)
+            : base(options) { }
+
+
+        public DbSet<Empleado> Empleados { get; set; }
 		public DbSet<Cliente> Clientes { get; set; }
 		public DbSet<Mesa> Mesas { get; set; }
 		public DbSet<Pedido> Pedidos { get; set; }
@@ -13,12 +20,15 @@ namespace SistemaRestaurante.Data
 		public DbSet<Producto> Productos { get; set; }
 		public DbSet<DetallePedido> DetallesPedidos { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
-			optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=RestauranteDB;Trusted_Connection=True;TrustServerCertificate=True");
-		}
+            if (!options.IsConfigured)
+            {
+                options.UseSqlServer(ConfiguracionApp.ObtenerCadenaConexion());
+            }
+        }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			// Relación Mesas (1) -> Pedidos (N)
 			modelBuilder.Entity<Pedido>()
