@@ -1,3 +1,7 @@
+using SistemaRestaurante.Data;
+using SistemaRestaurante.Forms;
+using SistemaRestaurante.Service;
+
 namespace SistemaRestaurante
 {
 	internal static class Program
@@ -11,7 +15,8 @@ namespace SistemaRestaurante
 			// To customize application configuration such as set high DPI settings or default font,
 			// see https://aka.ms/applicationconfiguration.
 			ApplicationConfiguration.Initialize();
-			Application.Run(new Form1());
-		}
-	}
+            Application.Run(new FrmEmpleados());
+
+        }
+    }
 }
