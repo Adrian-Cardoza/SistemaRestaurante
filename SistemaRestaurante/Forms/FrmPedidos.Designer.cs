@@ -58,15 +58,15 @@
             // 
             // txtBuscar
             // 
-            txtBuscar.Location = new Point(186, 48);
+            txtBuscar.Location = new Point(164, 48);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.Size = new Size(521, 31);
+            txtBuscar.Size = new Size(650, 31);
             txtBuscar.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(57, 54);
+            label1.Location = new Point(32, 51);
             label1.Name = "label1";
             label1.Size = new Size(123, 25);
             label1.TabIndex = 2;
@@ -142,39 +142,43 @@
             // 
             // btnNuevo
             // 
+            btnNuevo.BackColor = Color.LightGray;
             btnNuevo.Location = new Point(32, 620);
             btnNuevo.Name = "btnNuevo";
             btnNuevo.Size = new Size(112, 34);
             btnNuevo.TabIndex = 11;
             btnNuevo.Text = "Nuevo";
-            btnNuevo.UseVisualStyleBackColor = true;
+            btnNuevo.UseVisualStyleBackColor = false;
             // 
             // btnGuardar
             // 
+            btnGuardar.BackColor = Color.SpringGreen;
             btnGuardar.Location = new Point(176, 620);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(112, 34);
             btnGuardar.TabIndex = 12;
             btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.UseVisualStyleBackColor = false;
             // 
             // btnEditar
             // 
+            btnEditar.BackColor = Color.AliceBlue;
             btnEditar.Location = new Point(333, 620);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(112, 34);
             btnEditar.TabIndex = 13;
             btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.UseVisualStyleBackColor = false;
             // 
             // btnCancelar
             // 
+            btnCancelar.BackColor = Color.Firebrick;
             btnCancelar.Location = new Point(482, 620);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(112, 34);
             btnCancelar.TabIndex = 14;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             // 
             // lblFecha
             // 
@@ -189,6 +193,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.DodgerBlue;
             ClientSize = new Size(849, 666);
             Controls.Add(lblFecha);
             Controls.Add(btnCancelar);
