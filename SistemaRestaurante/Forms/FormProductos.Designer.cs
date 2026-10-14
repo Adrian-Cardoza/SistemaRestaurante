@@ -103,12 +103,13 @@
             // 
             // btnGuardar
             // 
+            btnGuardar.BackColor = Color.LimeGreen;
             btnGuardar.Location = new Point(6, 413);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(231, 34);
             btnGuardar.TabIndex = 7;
             btnGuardar.Text = "Guardar Producto";
-            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.UseVisualStyleBackColor = false;
             btnGuardar.Click += btnGuardar_Click;
             // 
             // dgvProductos
@@ -123,18 +124,20 @@
             // 
             // btnEliminar
             // 
+            btnEliminar.BackColor = Color.Firebrick;
             btnEliminar.Location = new Point(676, 413);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(112, 34);
             btnEliminar.TabIndex = 9;
             btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
             // 
             // FormProductos
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.DodgerBlue;
             ClientSize = new Size(800, 450);
             Controls.Add(btnEliminar);
             Controls.Add(dgvProductos);

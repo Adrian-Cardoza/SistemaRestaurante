@@ -54,7 +54,7 @@
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(43, 105);
+            lblNombre.Location = new Point(43, 108);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(64, 20);
             lblNombre.TabIndex = 1;
@@ -63,7 +63,7 @@
             // lblPuesto
             // 
             lblPuesto.AutoSize = true;
-            lblPuesto.Location = new Point(43, 157);
+            lblPuesto.Location = new Point(43, 153);
             lblPuesto.Name = "lblPuesto";
             lblPuesto.Size = new Size(53, 20);
             lblPuesto.TabIndex = 2;
@@ -72,11 +72,11 @@
             // txtId
             // 
             txtId.Enabled = false;
-            txtId.Location = new Point(71, 57);
+            txtId.Location = new Point(109, 58);
             txtId.Margin = new Padding(3, 4, 3, 4);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(50, 27);
+            txtId.Size = new Size(31, 27);
             txtId.TabIndex = 3;
             txtId.TextChanged += txtId_TextChanged;
             // 
@@ -85,25 +85,25 @@
             txtNombre.Location = new Point(109, 101);
             txtNombre.Margin = new Padding(3, 4, 3, 4);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(215, 27);
+            txtNombre.Size = new Size(152, 27);
             txtNombre.TabIndex = 4;
             // 
             // txtPuesto
             // 
-            txtPuesto.Location = new Point(109, 153);
+            txtPuesto.Location = new Point(109, 146);
             txtPuesto.Margin = new Padding(3, 4, 3, 4);
             txtPuesto.Name = "txtPuesto";
-            txtPuesto.Size = new Size(215, 27);
+            txtPuesto.Size = new Size(152, 27);
             txtPuesto.TabIndex = 5;
             // 
             // btnCrear
             // 
             btnCrear.BackColor = Color.ForestGreen;
             btnCrear.ForeColor = SystemColors.ButtonHighlight;
-            btnCrear.Location = new Point(12, 216);
-            btnCrear.Margin = new Padding(3, 4, 3, 4);
+            btnCrear.Location = new Point(43, 211);
+            btnCrear.Margin = new Padding(2, 3, 2, 3);
             btnCrear.Name = "btnCrear";
-            btnCrear.Size = new Size(113, 55);
+            btnCrear.Size = new Size(81, 31);
             btnCrear.TabIndex = 6;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = false;
@@ -113,10 +113,10 @@
             // 
             btnActualizar.BackColor = Color.DarkOrange;
             btnActualizar.ForeColor = SystemColors.ButtonHighlight;
-            btnActualizar.Location = new Point(146, 216);
-            btnActualizar.Margin = new Padding(3, 4, 3, 4);
+            btnActualizar.Location = new Point(128, 211);
+            btnActualizar.Margin = new Padding(2, 3, 2, 3);
             btnActualizar.Name = "btnActualizar";
-            btnActualizar.Size = new Size(119, 55);
+            btnActualizar.Size = new Size(88, 31);
             btnActualizar.TabIndex = 7;
             btnActualizar.Text = "Actualizar";
             btnActualizar.UseVisualStyleBackColor = false;
@@ -126,10 +126,10 @@
             // 
             btnEliminar.BackColor = Color.Firebrick;
             btnEliminar.ForeColor = SystemColors.ButtonHighlight;
-            btnEliminar.Location = new Point(289, 216);
-            btnEliminar.Margin = new Padding(3, 4, 3, 4);
+            btnEliminar.Location = new Point(220, 211);
+            btnEliminar.Margin = new Padding(2, 3, 2, 3);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(119, 55);
+            btnEliminar.Size = new Size(102, 31);
             btnEliminar.TabIndex = 8;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
@@ -139,10 +139,10 @@
             // 
             btnListar.BackColor = SystemColors.Highlight;
             btnListar.ForeColor = SystemColors.ButtonHighlight;
-            btnListar.Location = new Point(429, 216);
-            btnListar.Margin = new Padding(3, 4, 3, 4);
+            btnListar.Location = new Point(326, 211);
+            btnListar.Margin = new Padding(2, 3, 2, 3);
             btnListar.Name = "btnListar";
-            btnListar.Size = new Size(119, 55);
+            btnListar.Size = new Size(96, 31);
             btnListar.TabIndex = 9;
             btnListar.Text = "Listar";
             btnListar.UseVisualStyleBackColor = false;
@@ -155,14 +155,14 @@
             dgvEmpleados.AllowUserToResizeColumns = false;
             dgvEmpleados.AllowUserToResizeRows = false;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmpleados.Location = new Point(71, 290);
-            dgvEmpleados.Margin = new Padding(3, 4, 3, 4);
+            dgvEmpleados.Location = new Point(80, 263);
+            dgvEmpleados.Margin = new Padding(2, 3, 2, 3);
             dgvEmpleados.MultiSelect = false;
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.ReadOnly = true;
             dgvEmpleados.RowHeadersWidth = 51;
             dgvEmpleados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvEmpleados.Size = new Size(396, 281);
+            dgvEmpleados.Size = new Size(317, 225);
             dgvEmpleados.TabIndex = 10;
             dgvEmpleados.CellContentClick += dgvEmpleados_CellContentClick;
             dgvEmpleados.SelectionChanged += dgvEmpleados_SelectionChanged;
@@ -170,7 +170,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(43, 60);
+            label1.Location = new Point(43, 65);
             label1.Name = "label1";
             label1.Size = new Size(22, 20);
             label1.TabIndex = 12;
@@ -180,7 +180,8 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(559, 600);
+            BackColor = Color.DodgerBlue;
+            ClientSize = new Size(503, 500);
             Controls.Add(label1);
             Controls.Add(dgvEmpleados);
             Controls.Add(btnListar);
