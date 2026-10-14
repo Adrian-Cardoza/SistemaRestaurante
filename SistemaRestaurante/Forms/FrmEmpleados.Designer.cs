@@ -47,53 +47,56 @@
             // lblId
             // 
             lblId.Location = new Point(0, 0);
+            lblId.Margin = new Padding(4, 0, 4, 0);
             lblId.Name = "lblId";
-            lblId.Size = new Size(100, 23);
+            lblId.Size = new Size(125, 29);
             lblId.TabIndex = 11;
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(43, 105);
+            lblNombre.Location = new Point(54, 131);
+            lblNombre.Margin = new Padding(4, 0, 4, 0);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(64, 20);
+            lblNombre.Size = new Size(78, 25);
             lblNombre.TabIndex = 1;
             lblNombre.Text = "Nombre";
             // 
             // lblPuesto
             // 
             lblPuesto.AutoSize = true;
-            lblPuesto.Location = new Point(43, 157);
+            lblPuesto.Location = new Point(54, 196);
+            lblPuesto.Margin = new Padding(4, 0, 4, 0);
             lblPuesto.Name = "lblPuesto";
-            lblPuesto.Size = new Size(53, 20);
+            lblPuesto.Size = new Size(66, 25);
             lblPuesto.TabIndex = 2;
             lblPuesto.Text = "Puesto";
             // 
             // txtId
             // 
             txtId.Enabled = false;
-            txtId.Location = new Point(71, 57);
-            txtId.Margin = new Padding(3, 4, 3, 4);
+            txtId.Location = new Point(133, 72);
+            txtId.Margin = new Padding(4, 5, 4, 5);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(50, 27);
+            txtId.Size = new Size(62, 31);
             txtId.TabIndex = 3;
             txtId.TextChanged += txtId_TextChanged;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(109, 101);
-            txtNombre.Margin = new Padding(3, 4, 3, 4);
+            txtNombre.Location = new Point(136, 126);
+            txtNombre.Margin = new Padding(4, 5, 4, 5);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(215, 27);
+            txtNombre.Size = new Size(268, 31);
             txtNombre.TabIndex = 4;
             // 
             // txtPuesto
             // 
-            txtPuesto.Location = new Point(109, 153);
-            txtPuesto.Margin = new Padding(3, 4, 3, 4);
+            txtPuesto.Location = new Point(136, 191);
+            txtPuesto.Margin = new Padding(4, 5, 4, 5);
             txtPuesto.Name = "txtPuesto";
-            txtPuesto.Size = new Size(215, 27);
+            txtPuesto.Size = new Size(268, 31);
             txtPuesto.TabIndex = 5;
             // 
             // btnCrear
@@ -103,7 +106,7 @@
             btnCrear.Location = new Point(12, 216);
             btnCrear.Margin = new Padding(3, 4, 3, 4);
             btnCrear.Name = "btnCrear";
-            btnCrear.Size = new Size(113, 55);
+            btnCrear.Size = new Size(141, 69);
             btnCrear.TabIndex = 6;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = false;
@@ -116,7 +119,7 @@
             btnActualizar.Location = new Point(146, 216);
             btnActualizar.Margin = new Padding(3, 4, 3, 4);
             btnActualizar.Name = "btnActualizar";
-            btnActualizar.Size = new Size(119, 55);
+            btnActualizar.Size = new Size(149, 69);
             btnActualizar.TabIndex = 7;
             btnActualizar.Text = "Actualizar";
             btnActualizar.UseVisualStyleBackColor = false;
@@ -129,7 +132,7 @@
             btnEliminar.Location = new Point(289, 216);
             btnEliminar.Margin = new Padding(3, 4, 3, 4);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(119, 55);
+            btnEliminar.Size = new Size(149, 69);
             btnEliminar.TabIndex = 8;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
@@ -142,7 +145,7 @@
             btnListar.Location = new Point(429, 216);
             btnListar.Margin = new Padding(3, 4, 3, 4);
             btnListar.Name = "btnListar";
-            btnListar.Size = new Size(119, 55);
+            btnListar.Size = new Size(149, 69);
             btnListar.TabIndex = 9;
             btnListar.Text = "Listar";
             btnListar.UseVisualStyleBackColor = false;
@@ -170,15 +173,16 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(43, 60);
+            label1.Location = new Point(54, 75);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(22, 20);
+            label1.Size = new Size(28, 25);
             label1.TabIndex = 12;
             label1.Text = "Id";
             // 
             // FrmEmpleados
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(559, 600);
             Controls.Add(label1);
@@ -193,7 +197,7 @@
             Controls.Add(lblPuesto);
             Controls.Add(lblNombre);
             Controls.Add(lblId);
-            Margin = new Padding(3, 4, 3, 4);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "FrmEmpleados";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmEmpleados";
