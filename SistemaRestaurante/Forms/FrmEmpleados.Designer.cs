@@ -100,7 +100,7 @@
             // 
             btnCrear.BackColor = Color.ForestGreen;
             btnCrear.ForeColor = SystemColors.ButtonHighlight;
-            btnCrear.Location = new Point(43, 216);
+            btnCrear.Location = new Point(12, 216);
             btnCrear.Margin = new Padding(3, 4, 3, 4);
             btnCrear.Name = "btnCrear";
             btnCrear.Size = new Size(113, 55);
@@ -113,7 +113,7 @@
             // 
             btnActualizar.BackColor = Color.DarkOrange;
             btnActualizar.ForeColor = SystemColors.ButtonHighlight;
-            btnActualizar.Location = new Point(175, 216);
+            btnActualizar.Location = new Point(146, 216);
             btnActualizar.Margin = new Padding(3, 4, 3, 4);
             btnActualizar.Name = "btnActualizar";
             btnActualizar.Size = new Size(119, 55);
@@ -126,7 +126,7 @@
             // 
             btnEliminar.BackColor = Color.Firebrick;
             btnEliminar.ForeColor = SystemColors.ButtonHighlight;
-            btnEliminar.Location = new Point(321, 216);
+            btnEliminar.Location = new Point(289, 216);
             btnEliminar.Margin = new Padding(3, 4, 3, 4);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(119, 55);
@@ -139,7 +139,7 @@
             // 
             btnListar.BackColor = SystemColors.Highlight;
             btnListar.ForeColor = SystemColors.ButtonHighlight;
-            btnListar.Location = new Point(467, 216);
+            btnListar.Location = new Point(429, 216);
             btnListar.Margin = new Padding(3, 4, 3, 4);
             btnListar.Name = "btnListar";
             btnListar.Size = new Size(119, 55);
@@ -149,13 +149,19 @@
             // 
             // dgvEmpleados
             // 
+            dgvEmpleados.AllowUserToAddRows = false;
+            dgvEmpleados.AllowUserToDeleteRows = false;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmpleados.Location = new Point(43, 303);
+            dgvEmpleados.Location = new Point(71, 290);
             dgvEmpleados.Margin = new Padding(3, 4, 3, 4);
+            dgvEmpleados.MultiSelect = false;
             dgvEmpleados.Name = "dgvEmpleados";
+            dgvEmpleados.ReadOnly = true;
             dgvEmpleados.RowHeadersWidth = 51;
-            dgvEmpleados.Size = new Size(543, 281);
+            dgvEmpleados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvEmpleados.Size = new Size(396, 281);
             dgvEmpleados.TabIndex = 10;
+            dgvEmpleados.SelectionChanged += dgvEmpleados_SelectionChanged;
             // 
             // label1
             // 
@@ -170,7 +176,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(634, 600);
+            ClientSize = new Size(559, 600);
             Controls.Add(label1);
             Controls.Add(dgvEmpleados);
             Controls.Add(btnListar);
