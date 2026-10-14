@@ -8,49 +8,51 @@ namespace SistemaRestaurante.Service
 {
     public class EmpleadoService
     {
-        private readonly RestauranteContext _context;
-
-        public EmpleadoService(RestauranteContext context)
-        {
-            _context = context;
-        }
-
         public async Task<List<Empleado>> ListarEmpleadosAsync()
         {
-            return await _context.Empleados.ToListAsync();
-        }
-
-        public async Task<Empleado> ObtenerEmpleadoPorIdAsync(int id)
-        {
-            return await _context.Empleados.FindAsync(id);
+            using (var context = new RestauranteContext())
+            {
+                return await context.Empleados.ToListAsync();
+            }
         }
 
         public async Task CrearEmpleadoAsync(Empleado empleado)
         {
-            _context.Empleados.Add(empleado);
-            await _context.SaveChangesAsync();
+            using (var context = new RestauranteContext())
+            {
+                context.Empleados.Add(empleado);
+                await context.SaveChangesAsync();
+            }
         }
 
-        public async Task<bool> ActualizarEmpleadoAsync(Empleado empleado)
+        public async Task<Empleado> ObtenerEmpleadoPorIdAsync(int id)
         {
-            var existente = await _context.Empleados.FindAsync(empleado.Id);
-            if (existente == null) return false;
+            using (var context = new RestauranteContext())
+            {
+                return await context.Empleados.FindAsync(id);
+            }
+        }
 
-            existente.Nombre = empleado.Nombre;
-            existente.Rol = empleado.Rol;
-            await _context.SaveChangesAsync();
-            return true;
+        public async Task ActualizarEmpleadoAsync(Empleado empleado)
+        {
+            using (var context = new RestauranteContext())
+            {
+                context.Empleados.Update(empleado);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> EliminarEmpleadoAsync(int id)
         {
-            var empleado = await _context.Empleados.FindAsync(id);
-            if (empleado == null) return false;
+            using (var context = new RestauranteContext())
+            {
+                var empleado = await context.Empleados.FindAsync(id);
+                if (empleado == null) return false;
 
-            _context.Empleados.Remove(empleado);
-            await _context.SaveChangesAsync();
-            return true;
+                context.Empleados.Remove(empleado);
+                await context.SaveChangesAsync();
+                return true;
+            }
         }
-
     }
 }

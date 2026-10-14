@@ -146,11 +146,14 @@
             btnListar.TabIndex = 9;
             btnListar.Text = "Listar";
             btnListar.UseVisualStyleBackColor = false;
+            btnListar.Click += btnListar_Click;
             // 
             // dgvEmpleados
             // 
             dgvEmpleados.AllowUserToAddRows = false;
             dgvEmpleados.AllowUserToDeleteRows = false;
+            dgvEmpleados.AllowUserToResizeColumns = false;
+            dgvEmpleados.AllowUserToResizeRows = false;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvEmpleados.Location = new Point(71, 290);
             dgvEmpleados.Margin = new Padding(3, 4, 3, 4);
@@ -161,6 +164,7 @@
             dgvEmpleados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvEmpleados.Size = new Size(396, 281);
             dgvEmpleados.TabIndex = 10;
+            dgvEmpleados.CellContentClick += dgvEmpleados_CellContentClick;
             dgvEmpleados.SelectionChanged += dgvEmpleados_SelectionChanged;
             // 
             // label1
@@ -191,8 +195,10 @@
             Controls.Add(lblId);
             Margin = new Padding(3, 4, 3, 4);
             Name = "FrmEmpleados";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmEmpleados";
             Load += FrmEmpleados_Load;
+            MouseClick += FrmEmpleados_MouseClick;
             ((System.ComponentModel.ISupportInitialize)dgvEmpleados).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -14,13 +14,15 @@ namespace SistemaRestaurante.Forms
         public FrmEmpleados()
         {
             InitializeComponent();
-            _empleadoService = new EmpleadoService(new RestauranteContext());
+            _empleadoService = new EmpleadoService();
         }
 
         private async void FrmEmpleados_Load(object sender, EventArgs e)
         {
             await RefrescarLista();
-            
+
+            LimpiarCampos();
+
         }
 
         private async void btnCrear_Click(object sender, EventArgs e)
@@ -42,27 +44,33 @@ namespace SistemaRestaurante.Forms
             MessageBox.Show("Empleado creado correctamente");
 
             await RefrescarLista();
-            LimpiarCampos(); 
+            LimpiarCampos();
         }
 
 
         private async void btnActualizar_Click(object sender, EventArgs e)
+
         {
             if (dgvEmpleados.CurrentRow != null)
             {
+                if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtPuesto.Text))
+                {
+                    MessageBox.Show("Debe ingresar un nombre y un puesto antes de actualizar.");
+                    return;
+                }
+
                 int id = Convert.ToInt32(dgvEmpleados.CurrentRow.Cells["Id"].Value);
 
                 var empleado = await _empleadoService.ObtenerEmpleadoPorIdAsync(id);
                 if (empleado != null)
                 {
-                    empleado.Nombre = txtNombre.Text;
-                    empleado.Rol = txtPuesto.Text;
+                    empleado.Nombre = txtNombre.Text.Trim();
+                    empleado.Rol = txtPuesto.Text.Trim();
 
                     await _empleadoService.ActualizarEmpleadoAsync(empleado);
                     MessageBox.Show("Empleado actualizado");
-
                     await RefrescarLista();
-                    LimpiarCampos(); 
+                    LimpiarCampos();
                 }
                 else
                 {
@@ -83,11 +91,11 @@ namespace SistemaRestaurante.Forms
 
         private void dgvEmpleados_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvEmpleados.CurrentRow is DataGridViewRow row)
+            if (dgvEmpleados.CurrentRow != null)
             {
-                txtId.Text = row.Cells["Id"].Value?.ToString() ?? string.Empty;
-                txtNombre.Text = row.Cells["Nombre"].Value?.ToString() ?? string.Empty;
-                txtPuesto.Text = row.Cells["Rol"].Value?.ToString() ?? string.Empty;
+                txtId.Text = dgvEmpleados.CurrentRow.Cells["Id"].Value.ToString();
+                txtNombre.Text = dgvEmpleados.CurrentRow.Cells["Nombre"].Value.ToString();
+                txtPuesto.Text = dgvEmpleados.CurrentRow.Cells["Rol"].Value.ToString();
             }
         }
 
@@ -97,10 +105,18 @@ namespace SistemaRestaurante.Forms
         {
             if (dgvEmpleados.CurrentRow != null)
             {
+                var confirm = MessageBox.Show("¿Está seguro de eliminar este empleado?",
+                                              "Confirmar eliminación",
+                                              MessageBoxButtons.YesNo,
+                                              MessageBoxIcon.Warning);
+
+                if (confirm == DialogResult.No) return;
+
                 int id = Convert.ToInt32(dgvEmpleados.CurrentRow.Cells["Id"].Value);
 
                 bool eliminado = await _empleadoService.EliminarEmpleadoAsync(id);
                 MessageBox.Show(eliminado ? "Empleado eliminado" : "Empleado no encontrado");
+
                 await RefrescarLista();
                 LimpiarCampos();
             }
@@ -111,20 +127,46 @@ namespace SistemaRestaurante.Forms
         }
 
 
-        private async void btnListar_Click(object sender, EventArgs e)
-        {
-            await RefrescarLista();
-        }
+        
 
         private async Task RefrescarLista()
         {
             var empleados = await _empleadoService.ListarEmpleadosAsync();
             dgvEmpleados.DataSource = empleados;
+
+            dgvEmpleados.ClearSelection(); 
+            LimpiarCampos();
         }
 
         private void txtId_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgvEmpleados_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                txtId.Text = dgvEmpleados.Rows[e.RowIndex].Cells["Id"].Value.ToString();
+                txtNombre.Text = dgvEmpleados.Rows[e.RowIndex].Cells["Nombre"].Value.ToString();
+                txtPuesto.Text = dgvEmpleados.Rows[e.RowIndex].Cells["Rol"].Value.ToString();
+            }
+        }
+
+        private void FrmEmpleados_MouseClick(object sender, MouseEventArgs e)
+        {
+            var hit = dgvEmpleados.HitTest(e.X, e.Y);
+
+            // Si el clic no fue sobre una celda válida
+            if (hit.Type == DataGridViewHitTestType.None)
+            {
+                LimpiarCampos();
+            }
+        }
+
+        private void btnListar_Click(object sender, EventArgs e)
+        {
+            RefrescarLista();
         }
     }
 }
