@@ -10,47 +10,47 @@ namespace SistemaRestaurante.Service
     {
         public async Task<List<Empleado>> ListarEmpleadosAsync()
         {
-            using (var context = new RestauranteContext())
+            using var ctx = new RestauranteContext();
             {
-                return await context.Empleados.ToListAsync();
+                return await ctx.Empleados.ToListAsync();
             }
         }
 
         public async Task CrearEmpleadoAsync(Empleado empleado)
         {
-            using (var context = new RestauranteContext())
+            using var ctx = new RestauranteContext();
             {
-                context.Empleados.Add(empleado);
-                await context.SaveChangesAsync();
+                ctx.Empleados.Add(empleado);
+                await ctx.SaveChangesAsync();
             }
         }
 
         public async Task<Empleado> ObtenerEmpleadoPorIdAsync(int id)
         {
-            using (var context = new RestauranteContext())
+            using var ctx = new RestauranteContext();
             {
-                return await context.Empleados.FindAsync(id);
+                return await ctx.Empleados.FindAsync(id);
             }
         }
 
         public async Task ActualizarEmpleadoAsync(Empleado empleado)
         {
-            using (var context = new RestauranteContext())
+            using var ctx = new RestauranteContext();
             {
-                context.Empleados.Update(empleado);
-                await context.SaveChangesAsync();
+                ctx.Empleados.Update(empleado);
+                await ctx.SaveChangesAsync();
             }
         }
 
         public async Task<bool> EliminarEmpleadoAsync(int id)
         {
-            using (var context = new RestauranteContext())
+            using var ctx = new RestauranteContext();
             {
-                var empleado = await context.Empleados.FindAsync(id);
+                var empleado = await ctx.Empleados.FindAsync(id);
                 if (empleado == null) return false;
 
-                context.Empleados.Remove(empleado);
-                await context.SaveChangesAsync();
+                ctx.Empleados.Remove(empleado);
+                await ctx.SaveChangesAsync();
                 return true;
             }
         }

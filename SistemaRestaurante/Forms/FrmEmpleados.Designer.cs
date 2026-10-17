@@ -160,6 +160,7 @@
             dgvEmpleados.MultiSelect = false;
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.ReadOnly = true;
+            dgvEmpleados.RowHeadersVisible = false;
             dgvEmpleados.RowHeadersWidth = 51;
             dgvEmpleados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvEmpleados.Size = new Size(317, 225);
