@@ -105,6 +105,7 @@
             dgvClientes.MultiSelect = false;
             dgvClientes.Name = "dgvClientes";
             dgvClientes.ReadOnly = true;
+            dgvClientes.RowHeadersVisible = false;
             dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvClientes.Size = new Size(415, 174);
             dgvClientes.TabIndex = 6;

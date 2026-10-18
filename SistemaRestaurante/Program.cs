@@ -19,7 +19,7 @@ namespace SistemaRestaurante
             ApplicationConfiguration.Initialize();
 
             // Aquí le decimos que inicie primero la ventana de Login
-            Application.Run(new FrmLogin());
+            Application.Run(new FrmClientes());
         }
     }
 }
