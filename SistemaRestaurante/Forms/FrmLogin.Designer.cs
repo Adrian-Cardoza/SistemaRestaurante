@@ -39,7 +39,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.ForeColor = SystemColors.ButtonHighlight;
+            label1.ForeColor = Color.FromArgb(34, 34, 34);
             label1.Location = new Point(185, 161);
             label1.Name = "label1";
             label1.Size = new Size(81, 25);
@@ -50,7 +50,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.ForeColor = SystemColors.ButtonHighlight;
+            label2.ForeColor = Color.FromArgb(34, 34, 34);
             label2.Location = new Point(185, 221);
             label2.Name = "label2";
             label2.Size = new Size(110, 25);
@@ -59,6 +59,7 @@
             // 
             // txtUsuario
             // 
+            txtUsuario.ForeColor = Color.FromArgb(34, 34, 34);
             txtUsuario.Location = new Point(305, 161);
             txtUsuario.Name = "txtUsuario";
             txtUsuario.Size = new Size(150, 31);
@@ -66,6 +67,7 @@
             // 
             // txtContraseña
             // 
+            txtContraseña.ForeColor = Color.FromArgb(34, 34, 34);
             txtContraseña.Location = new Point(305, 221);
             txtContraseña.Name = "txtContraseña";
             txtContraseña.Size = new Size(150, 31);
@@ -75,6 +77,9 @@
             // 
             btnIngresar.BackColor = Color.Lime;
             btnIngresar.BackgroundImageLayout = ImageLayout.None;
+            btnIngresar.FlatAppearance.BorderSize = 0;
+            btnIngresar.FlatStyle = FlatStyle.Flat;
+            btnIngresar.ForeColor = Color.FromArgb(34, 34, 34);
             btnIngresar.Location = new Point(183, 342);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(112, 34);
@@ -86,6 +91,9 @@
             // btnCancelar
             // 
             btnCancelar.BackColor = Color.Firebrick;
+            btnCancelar.FlatAppearance.BorderSize = 0;
+            btnCancelar.FlatStyle = FlatStyle.Flat;
+            btnCancelar.ForeColor = Color.FromArgb(34, 34, 34);
             btnCancelar.Location = new Point(427, 342);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(112, 34);
@@ -98,7 +106,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.RoyalBlue;
+            BackColor = Color.FromArgb(244, 246, 249);
             ClientSize = new Size(800, 450);
             Controls.Add(btnCancelar);
             Controls.Add(btnIngresar);
@@ -106,6 +114,7 @@
             Controls.Add(txtUsuario);
             Controls.Add(label2);
             Controls.Add(label1);
+            ForeColor = Color.FromArgb(34, 34, 34);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "FrmLogin";
             StartPosition = FormStartPosition.CenterScreen;

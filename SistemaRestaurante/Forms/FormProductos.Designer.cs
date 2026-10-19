@@ -44,6 +44,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = Color.FromArgb(34, 34, 34);
             label1.Location = new Point(6, 6);
             label1.Name = "label1";
             label1.Size = new Size(82, 25);
@@ -52,6 +53,7 @@
             // 
             // txtNombre
             // 
+            txtNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtNombre.Location = new Point(111, 3);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(383, 31);
@@ -60,6 +62,7 @@
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.FromArgb(34, 34, 34);
             label2.Location = new Point(6, 49);
             label2.Name = "label2";
             label2.Size = new Size(64, 25);
@@ -76,6 +79,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.FromArgb(34, 34, 34);
             label3.Location = new Point(6, 92);
             label3.Name = "label3";
             label3.Size = new Size(92, 25);
@@ -103,7 +107,11 @@
             // 
             // btnGuardar
             // 
+            btnGuardar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnGuardar.BackColor = Color.LimeGreen;
+            btnGuardar.FlatAppearance.BorderSize = 0;
+            btnGuardar.FlatStyle = FlatStyle.Flat;
+            btnGuardar.ForeColor = Color.FromArgb(34, 34, 34);
             btnGuardar.Location = new Point(6, 413);
             btnGuardar.Name = "btnGuardar";
             btnGuardar.Size = new Size(231, 34);
@@ -114,6 +122,7 @@
             // 
             // dgvProductos
             // 
+            dgvProductos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvProductos.Location = new Point(8, 188);
             dgvProductos.Name = "dgvProductos";
@@ -124,7 +133,11 @@
             // 
             // btnEliminar
             // 
+            btnEliminar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnEliminar.BackColor = Color.Firebrick;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.ForeColor = Color.FromArgb(34, 34, 34);
             btnEliminar.Location = new Point(676, 413);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(112, 34);
@@ -137,7 +150,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.DodgerBlue;
+            BackColor = Color.FromArgb(244, 246, 249);
             ClientSize = new Size(800, 450);
             Controls.Add(btnEliminar);
             Controls.Add(dgvProductos);

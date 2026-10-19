@@ -47,63 +47,74 @@
             // lblId
             // 
             lblId.Location = new Point(0, 0);
+            lblId.Margin = new Padding(4, 0, 4, 0);
             lblId.Name = "lblId";
-            lblId.Size = new Size(100, 23);
+            lblId.Size = new Size(125, 29);
             lblId.TabIndex = 11;
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(43, 108);
+            lblNombre.ForeColor = Color.FromArgb(34, 34, 34);
+            lblNombre.Location = new Point(54, 135);
+            lblNombre.Margin = new Padding(4, 0, 4, 0);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(64, 20);
+            lblNombre.Size = new Size(78, 25);
             lblNombre.TabIndex = 1;
             lblNombre.Text = "Nombre";
             // 
             // lblPuesto
             // 
             lblPuesto.AutoSize = true;
-            lblPuesto.Location = new Point(43, 153);
+            lblPuesto.ForeColor = Color.FromArgb(34, 34, 34);
+            lblPuesto.Location = new Point(54, 191);
+            lblPuesto.Margin = new Padding(4, 0, 4, 0);
             lblPuesto.Name = "lblPuesto";
-            lblPuesto.Size = new Size(53, 20);
+            lblPuesto.Size = new Size(66, 25);
             lblPuesto.TabIndex = 2;
             lblPuesto.Text = "Puesto";
             // 
             // txtId
             // 
+            txtId.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtId.Enabled = false;
-            txtId.Location = new Point(109, 58);
-            txtId.Margin = new Padding(3, 4, 3, 4);
+            txtId.Location = new Point(136, 72);
+            txtId.Margin = new Padding(4, 5, 4, 5);
             txtId.Name = "txtId";
             txtId.ReadOnly = true;
-            txtId.Size = new Size(31, 27);
+            txtId.Size = new Size(38, 31);
             txtId.TabIndex = 3;
             txtId.TextChanged += txtId_TextChanged;
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(109, 101);
-            txtNombre.Margin = new Padding(3, 4, 3, 4);
+            txtNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtNombre.Location = new Point(136, 126);
+            txtNombre.Margin = new Padding(4, 5, 4, 5);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(152, 27);
+            txtNombre.Size = new Size(189, 31);
             txtNombre.TabIndex = 4;
             // 
             // txtPuesto
             // 
-            txtPuesto.Location = new Point(109, 146);
-            txtPuesto.Margin = new Padding(3, 4, 3, 4);
+            txtPuesto.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtPuesto.Location = new Point(136, 182);
+            txtPuesto.Margin = new Padding(4, 5, 4, 5);
             txtPuesto.Name = "txtPuesto";
-            txtPuesto.Size = new Size(152, 27);
+            txtPuesto.Size = new Size(189, 31);
             txtPuesto.TabIndex = 5;
             // 
             // btnCrear
             // 
+            btnCrear.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnCrear.BackColor = Color.ForestGreen;
-            btnCrear.ForeColor = SystemColors.ButtonHighlight;
-            btnCrear.Location = new Point(43, 211);
-            btnCrear.Margin = new Padding(2, 3, 2, 3);
+            btnCrear.FlatAppearance.BorderSize = 0;
+            btnCrear.FlatStyle = FlatStyle.Flat;
+            btnCrear.ForeColor = Color.FromArgb(34, 34, 34);
+            btnCrear.Location = new Point(54, 264);
+            btnCrear.Margin = new Padding(2, 4, 2, 4);
             btnCrear.Name = "btnCrear";
-            btnCrear.Size = new Size(81, 31);
+            btnCrear.Size = new Size(101, 39);
             btnCrear.TabIndex = 6;
             btnCrear.Text = "Crear";
             btnCrear.UseVisualStyleBackColor = false;
@@ -111,12 +122,15 @@
             // 
             // btnActualizar
             // 
+            btnActualizar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnActualizar.BackColor = Color.DarkOrange;
-            btnActualizar.ForeColor = SystemColors.ButtonHighlight;
-            btnActualizar.Location = new Point(128, 211);
-            btnActualizar.Margin = new Padding(2, 3, 2, 3);
+            btnActualizar.FlatAppearance.BorderSize = 0;
+            btnActualizar.FlatStyle = FlatStyle.Flat;
+            btnActualizar.ForeColor = Color.FromArgb(34, 34, 34);
+            btnActualizar.Location = new Point(160, 264);
+            btnActualizar.Margin = new Padding(2, 4, 2, 4);
             btnActualizar.Name = "btnActualizar";
-            btnActualizar.Size = new Size(88, 31);
+            btnActualizar.Size = new Size(110, 39);
             btnActualizar.TabIndex = 7;
             btnActualizar.Text = "Actualizar";
             btnActualizar.UseVisualStyleBackColor = false;
@@ -124,12 +138,15 @@
             // 
             // btnEliminar
             // 
+            btnEliminar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnEliminar.BackColor = Color.Firebrick;
-            btnEliminar.ForeColor = SystemColors.ButtonHighlight;
-            btnEliminar.Location = new Point(220, 211);
-            btnEliminar.Margin = new Padding(2, 3, 2, 3);
+            btnEliminar.FlatAppearance.BorderSize = 0;
+            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.ForeColor = Color.FromArgb(34, 34, 34);
+            btnEliminar.Location = new Point(275, 264);
+            btnEliminar.Margin = new Padding(2, 4, 2, 4);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(102, 31);
+            btnEliminar.Size = new Size(128, 39);
             btnEliminar.TabIndex = 8;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
@@ -137,12 +154,15 @@
             // 
             // btnListar
             // 
+            btnListar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnListar.BackColor = SystemColors.Highlight;
-            btnListar.ForeColor = SystemColors.ButtonHighlight;
-            btnListar.Location = new Point(326, 211);
-            btnListar.Margin = new Padding(2, 3, 2, 3);
+            btnListar.FlatAppearance.BorderSize = 0;
+            btnListar.FlatStyle = FlatStyle.Flat;
+            btnListar.ForeColor = Color.FromArgb(34, 34, 34);
+            btnListar.Location = new Point(408, 264);
+            btnListar.Margin = new Padding(2, 4, 2, 4);
             btnListar.Name = "btnListar";
-            btnListar.Size = new Size(96, 31);
+            btnListar.Size = new Size(120, 39);
             btnListar.TabIndex = 9;
             btnListar.Text = "Listar";
             btnListar.UseVisualStyleBackColor = false;
@@ -154,16 +174,17 @@
             dgvEmpleados.AllowUserToDeleteRows = false;
             dgvEmpleados.AllowUserToResizeColumns = false;
             dgvEmpleados.AllowUserToResizeRows = false;
+            dgvEmpleados.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             dgvEmpleados.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEmpleados.Location = new Point(80, 263);
-            dgvEmpleados.Margin = new Padding(2, 3, 2, 3);
+            dgvEmpleados.Location = new Point(100, 329);
+            dgvEmpleados.Margin = new Padding(2, 4, 2, 4);
             dgvEmpleados.MultiSelect = false;
             dgvEmpleados.Name = "dgvEmpleados";
             dgvEmpleados.ReadOnly = true;
             dgvEmpleados.RowHeadersVisible = false;
             dgvEmpleados.RowHeadersWidth = 51;
             dgvEmpleados.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvEmpleados.Size = new Size(317, 225);
+            dgvEmpleados.Size = new Size(396, 281);
             dgvEmpleados.TabIndex = 10;
             dgvEmpleados.CellContentClick += dgvEmpleados_CellContentClick;
             dgvEmpleados.SelectionChanged += dgvEmpleados_SelectionChanged;
@@ -171,18 +192,20 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(43, 65);
+            label1.ForeColor = Color.FromArgb(34, 34, 34);
+            label1.Location = new Point(54, 81);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(22, 20);
+            label1.Size = new Size(28, 25);
             label1.TabIndex = 12;
             label1.Text = "Id";
             // 
             // FrmEmpleados
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.DodgerBlue;
-            ClientSize = new Size(503, 500);
+            BackColor = Color.FromArgb(244, 246, 249);
+            ClientSize = new Size(629, 625);
             Controls.Add(label1);
             Controls.Add(dgvEmpleados);
             Controls.Add(btnListar);
@@ -195,7 +218,7 @@
             Controls.Add(lblPuesto);
             Controls.Add(lblNombre);
             Controls.Add(lblId);
-            Margin = new Padding(3, 4, 3, 4);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "FrmEmpleados";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "FrmEmpleados";

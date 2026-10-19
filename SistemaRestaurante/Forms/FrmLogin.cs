@@ -35,5 +35,10 @@ namespace SistemaRestaurante.Forms
         {
             Application.Exit(); // Cierra el sistema si cancelan
         }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
