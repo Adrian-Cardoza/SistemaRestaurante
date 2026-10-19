@@ -45,14 +45,13 @@
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.FromArgb(244, 246, 249);
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Controls.Add(lblMesasOcupadas);
             panel1.Controls.Add(lblMesas);
             panel1.Location = new Point(39, 68);
             panel1.Name = "panel1";
-            panel1.Size = new Size(565, 267);
+            panel1.Size = new Size(585, 286);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint_1;
             // 
@@ -79,16 +78,14 @@
             // 
             // panel2
             // 
-            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel2.BackColor = Color.FromArgb(244, 246, 249);
             panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(lblPedidosActivos);
             panel2.Controls.Add(lblpedidos);
             panel2.Location = new Point(709, 68);
             panel2.Name = "panel2";
-            panel2.Size = new Size(565, 267);
+            panel2.Size = new Size(585, 286);
             panel2.TabIndex = 1;
-            
             // 
             // lblPedidosActivos
             // 
@@ -113,14 +110,13 @@
             // 
             // panel3
             // 
-            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel3.BackColor = Color.FromArgb(244, 246, 249);
             panel3.BorderStyle = BorderStyle.FixedSingle;
             panel3.Controls.Add(lblTotalProductos);
             panel3.Controls.Add(lblTotal);
             panel3.Location = new Point(1373, 63);
             panel3.Name = "panel3";
-            panel3.Size = new Size(565, 267);
+            panel3.Size = new Size(585, 286);
             panel3.TabIndex = 2;
             panel3.Paint += panel3_Paint;
             // 
@@ -147,10 +143,9 @@
             // 
             // textBox1
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             textBox1.BorderStyle = BorderStyle.FixedSingle;
-            textBox1.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox1.ForeColor = Color.FromArgb(34, 34, 34);
+            textBox1.Font = new Font("Segoe UI Black", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            textBox1.ForeColor = Color.FromArgb(15, 23, 42);
             textBox1.Location = new Point(12, 3);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(1946, 50);
