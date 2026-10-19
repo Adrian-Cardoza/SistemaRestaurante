@@ -50,7 +50,7 @@
             // 
             // dgvPedidos
             // 
-            dgvPedidos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvPedidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvPedidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPedidos.Location = new Point(32, 118);
             dgvPedidos.Margin = new Padding(2);
@@ -63,7 +63,6 @@
             // 
             // txtBuscar
             // 
-            txtBuscar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             txtBuscar.Location = new Point(164, 48);
             txtBuscar.Margin = new Padding(2);
             txtBuscar.Name = "txtBuscar";

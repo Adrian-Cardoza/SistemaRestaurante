@@ -58,6 +58,7 @@ namespace SistemaRestaurante.Forms
             // 
             // numericUpDown1
             // 
+            numericUpDown1.Anchor = AnchorStyles.Bottom;
             numericUpDown1.Location = new Point(207, 352);
             numericUpDown1.Margin = new Padding(4);
             numericUpDown1.Name = "numericUpDown1";
@@ -66,6 +67,7 @@ namespace SistemaRestaurante.Forms
             // 
             // numericUpDown2
             // 
+            numericUpDown2.Anchor = AnchorStyles.Bottom;
             numericUpDown2.Location = new Point(675, 350);
             numericUpDown2.Margin = new Padding(4);
             numericUpDown2.Name = "numericUpDown2";
@@ -74,7 +76,7 @@ namespace SistemaRestaurante.Forms
             // 
             // EstadoMesa
             // 
-            EstadoMesa.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            EstadoMesa.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             EstadoMesa.FormattingEnabled = true;
             EstadoMesa.Items.AddRange(new object[] { "Libre", "Ocupada", "Reservada" });
             EstadoMesa.Location = new Point(29, 409);
@@ -96,7 +98,7 @@ namespace SistemaRestaurante.Forms
             // 
             // GuardarBtn
             // 
-            GuardarBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            GuardarBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             GuardarBtn.BackColor = Color.Lime;
             GuardarBtn.FlatAppearance.BorderSize = 0;
             GuardarBtn.FlatStyle = FlatStyle.Flat;
@@ -110,7 +112,7 @@ namespace SistemaRestaurante.Forms
             // 
             // CambiarEstadoBtn
             // 
-            CambiarEstadoBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            CambiarEstadoBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             CambiarEstadoBtn.BackColor = Color.LightGray;
             CambiarEstadoBtn.FlatAppearance.BorderSize = 0;
             CambiarEstadoBtn.FlatStyle = FlatStyle.Flat;
@@ -124,7 +126,7 @@ namespace SistemaRestaurante.Forms
             // 
             // LimpiarCamposBtn
             // 
-            LimpiarCamposBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            LimpiarCamposBtn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             LimpiarCamposBtn.BackColor = Color.Firebrick;
             LimpiarCamposBtn.FlatAppearance.BorderSize = 0;
             LimpiarCamposBtn.FlatStyle = FlatStyle.Flat;
@@ -138,6 +140,7 @@ namespace SistemaRestaurante.Forms
             // 
             // CapacidadLb
             // 
+            CapacidadLb.Anchor = AnchorStyles.Bottom;
             CapacidadLb.AutoSize = true;
             CapacidadLb.ForeColor = Color.FromArgb(34, 34, 34);
             CapacidadLb.Location = new Point(572, 352);
@@ -149,6 +152,7 @@ namespace SistemaRestaurante.Forms
             // 
             // MesaLb
             // 
+            MesaLb.Anchor = AnchorStyles.Bottom;
             MesaLb.AutoSize = true;
             MesaLb.ForeColor = Color.FromArgb(34, 34, 34);
             MesaLb.Location = new Point(145, 358);
