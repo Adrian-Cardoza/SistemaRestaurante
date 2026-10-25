@@ -4,12 +4,13 @@ using System.Windows.Forms;
 using SistemaRestaurante.Models;
 using SistemaRestaurante.Services;
 using SistemaRestaurante.Data;
-
+using System.Linq;
 namespace SistemaRestaurante.Forms
 {
     public partial class FormProductos : Form
     {
         private ProductoService _service;
+        private int _productoIdSeleccionado = 0;
 
         public FormProductos()
         {
@@ -20,21 +21,53 @@ namespace SistemaRestaurante.Forms
 
         private void CargarTabla()
         {
-            if (_service != null)
-            {
-                dgvProductos.DataSource = null;
-                dgvProductos.DataSource = _service.ObtenerTodos();
+            if (_service == null)
+                return;
 
-                // Formato de moneda en dólares ($12.50) para la tabla
-                if (dgvProductos.Columns["Precio"] != null)
-                {
-                    dgvProductos.Columns["Precio"].DefaultCellStyle.Format = "$#,##0.00";
-                }
+            // Obtener todos los productos
+            var productos = _service.ObtenerTodos().ToList();
+
+            // Obtener el texto del buscador
+            string busqueda = txtBuscarProducto.Text.Trim();
+
+            // Filtrar por nombre o categoría
+            if (!string.IsNullOrWhiteSpace(busqueda))
+            {
+                productos = productos.Where(p =>
+                    (p.Nombre ?? "").Contains(
+                        busqueda,
+                        StringComparison.OrdinalIgnoreCase) ||
+
+                    (p.Categoria ?? "").Contains(
+                        busqueda,
+                        StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+            }
+
+            // Actualizar la tabla
+            dgvProductos.DataSource = null;
+            dgvProductos.DataSource = productos;
+
+            // Formato del precio en dólares
+            if (dgvProductos.Columns["Precio"] != null)
+            {
+                dgvProductos.Columns["Precio"]
+                    .DefaultCellStyle.Format = "$#,##0.00";
             }
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (_productoIdSeleccionado != 0)
+            {
+                MessageBox.Show(
+                    "Tiene un producto seleccionado. Use Editar para actualizarlo o Nuevo para registrar otro.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 // 1. Validar que no haya campos vacíos
@@ -111,7 +144,26 @@ namespace SistemaRestaurante.Forms
         }
         private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex < 0)
+                return;
 
+            DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
+
+            _productoIdSeleccionado =
+                Convert.ToInt32(fila.Cells["ID"].Value);
+
+            txtNombre.Text =
+                Convert.ToString(fila.Cells["Nombre"].Value) ?? "";
+
+            txtPrecio.Text =
+                Convert.ToDecimal(fila.Cells["Precio"].Value)
+                .ToString("0.00", CultureInfo.InvariantCulture);
+
+            txtCategoria.Text =
+                Convert.ToString(fila.Cells["Categoria"].Value) ?? "";
+
+            Disponible.Checked =
+                Convert.ToBoolean(fila.Cells["Disponible"].Value);
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -134,6 +186,183 @@ namespace SistemaRestaurante.Forms
             {
                 MessageBox.Show("Por favor, seleccione una fila completa en la tabla para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Verificar que exista un producto seleccionado
+                if (_productoIdSeleccionado == 0)
+                {
+                    MessageBox.Show(
+                        "Seleccione un producto de la tabla para editar.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Validar campos vacíos
+                if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecio.Text) ||
+                    string.IsNullOrWhiteSpace(txtCategoria.Text))
+                {
+                    MessageBox.Show(
+                        "Por favor llene todos los campos obligatorios.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string nombre = txtNombre.Text.Trim();
+                string categoria = txtCategoria.Text.Trim();
+
+                // 3. Validar nombre
+                foreach (char c in nombre)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show(
+                            "El nombre solo debe contener letras y espacios.",
+                            "Nombre inválido",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        txtNombre.Focus();
+                        return;
+                    }
+                }
+
+                // 4. Validar categoría
+                foreach (char c in categoria)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show(
+                            "La categoría solo debe contener letras y espacios.",
+                            "Categoría inválida",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+
+                        txtCategoria.Focus();
+                        return;
+                    }
+                }
+
+                // 5. Validar precio
+                string textoPrecio = txtPrecio.Text.Trim().Replace(',', '.');
+
+                if (!decimal.TryParse(
+                        textoPrecio,
+                        NumberStyles.Any,
+                        CultureInfo.InvariantCulture,
+                        out decimal precio) || precio <= 0)
+                {
+                    MessageBox.Show(
+                        "El precio debe ser un número válido mayor a 0.",
+                        "Precio inválido",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    txtPrecio.Focus();
+                    return;
+                }
+
+                // 6. Actualizar el producto seleccionado
+                bool actualizado = _service.Actualizar(
+                    _productoIdSeleccionado,
+                    nombre,
+                    precio,
+                    categoria,
+                    Disponible.Checked
+                );
+
+                if (!actualizado)
+                {
+                    MessageBox.Show(
+                        "El producto seleccionado ya no existe.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 7. Confirmación
+                MessageBox.Show(
+                    "Producto actualizado correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                // 8. Actualizar tabla
+                CargarTabla();
+
+                // 9. Limpiar los campos
+                txtNombre.Clear();
+                txtPrecio.Clear();
+                txtCategoria.Clear();
+
+                Disponible.Checked = true;
+                _productoIdSeleccionado = 0;
+
+                dgvProductos.ClearSelection();
+                txtNombre.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al actualizar el producto: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+            txtNombre.Clear();
+            txtPrecio.Clear();
+            txtCategoria.Clear();
+
+            Disponible.Checked = true;
+
+            dgvProductos.ClearSelection();
+
+            _productoIdSeleccionado = 0;
+
+            txtNombre.Focus();
+        }
+
+        private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
+        {
+            CargarTabla();
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtCategoria_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPrecio_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Disponible_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

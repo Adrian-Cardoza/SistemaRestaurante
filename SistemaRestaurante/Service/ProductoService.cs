@@ -27,6 +27,30 @@ namespace SistemaRestaurante.Services
             _context.SaveChanges();
         }
 
+        // Método para actualizar un producto existente
+        public bool Actualizar(int id, string nombre, decimal precio,
+                               string categoria, bool disponible)
+        {
+            // Buscar el producto por su ID
+            var producto = _context.Productos.Find(id);
+
+            if (producto == null)
+            {
+                return false;
+            }
+
+            // Modificar sus propiedades
+            producto.Nombre = nombre;
+            producto.Precio = precio;
+            producto.Categoria = categoria;
+            producto.Disponible = disponible;
+
+            // Guardar los cambios en la base de datos
+            _context.SaveChanges();
+
+            return true;
+        }
+
         // Método para eliminar un producto por su ID
         public void Eliminar(int id)
         {
