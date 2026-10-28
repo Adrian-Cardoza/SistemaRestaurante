@@ -7,12 +7,12 @@ using SistemaRestaurante.Data;
 using System.Linq;
 namespace SistemaRestaurante.Forms
 {
-    public partial class FormProductos : Form
+    public partial class FrmProductos : Form
     {
         private ProductoService _service;
         private int _productoIdSeleccionado = 0;
 
-        public FormProductos()
+        public FrmProductos()
         {
             InitializeComponent();
             _service = new ProductoService(new RestauranteContext());

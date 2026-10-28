@@ -11,6 +11,9 @@ namespace SistemaRestaurante.Service
 		{
 			using var ctx = new RestauranteContext();
 			IQueryable<Pedido> consulta = ctx.Pedidos
+				.Include(p => p.Cliente)
+				.Include(p => p.Empleado)
+				.Include(p => p.Mesa)
 				.Include(p => p.DetallesPedidos)
 				.AsNoTracking();
 

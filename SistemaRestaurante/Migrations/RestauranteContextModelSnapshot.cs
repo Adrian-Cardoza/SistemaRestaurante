@@ -45,6 +45,15 @@ namespace SistemaRestaurante.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Correo = "juan.perez@example.com",
+                            DUI = 12345678,
+                            Nombre = "Juan Perez"
+                        });
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.DetallePedido", b =>

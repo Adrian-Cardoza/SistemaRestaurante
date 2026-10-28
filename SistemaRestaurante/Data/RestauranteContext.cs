@@ -6,13 +6,13 @@ namespace SistemaRestaurante.Data
 {
 	public class RestauranteContext : DbContext
 	{
-        public RestauranteContext() { }
+		public RestauranteContext() { }
 
-        public RestauranteContext(DbContextOptions<RestauranteContext> options)
-            : base(options) { }
+		public RestauranteContext(DbContextOptions<RestauranteContext> options)
+			: base(options) { }
 
 
-        public DbSet<Empleado> Empleados { get; set; }
+		public DbSet<Empleado> Empleados { get; set; }
 		public DbSet<Cliente> Clientes { get; set; }
 		public DbSet<Mesa> Mesas { get; set; }
 		public DbSet<Pedido> Pedidos { get; set; }
@@ -22,13 +22,13 @@ namespace SistemaRestaurante.Data
 
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
-            if (!options.IsConfigured)
-            {
-                options.UseSqlServer(ConfiguracionApp.ObtenerCadenaConexion());
-            }
-        }
+			if (!options.IsConfigured)
+			{
+				options.UseSqlServer(ConfiguracionApp.ObtenerCadenaConexion());
+			}
+		}
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			// Relación Mesas (1) -> Pedidos (N)
 			modelBuilder.Entity<Pedido>()
@@ -71,6 +71,16 @@ namespace SistemaRestaurante.Data
 				.WithMany(pr => pr.DetallesPedidos)
 				.HasForeignKey(dp => dp.IdProducto)
 				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Cliente>().HasData(
+				new Cliente
+				{
+					Id = 1,
+					Nombre = "Juan Perez",
+					DUI = 12345678,
+					Correo = "juan.perez@example.com",
+				}
+			);
 		}
 	}
 }
