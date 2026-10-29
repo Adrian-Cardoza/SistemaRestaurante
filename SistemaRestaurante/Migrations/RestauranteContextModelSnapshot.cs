@@ -17,7 +17,7 @@ namespace SistemaRestaurante.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -93,6 +93,10 @@ namespace SistemaRestaurante.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Contraseña")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -103,9 +107,31 @@ namespace SistemaRestaurante.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Empleados");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Contraseña = "123",
+                            Nombre = "Adrian",
+                            Rol = "Administrador",
+                            Usuario = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Contraseña = "123",
+                            Nombre = "Elvis",
+                            Rol = "Mesero",
+                            Usuario = "mesero"
+                        });
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Factura", b =>

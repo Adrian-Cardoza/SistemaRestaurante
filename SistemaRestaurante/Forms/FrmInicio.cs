@@ -1,16 +1,17 @@
 ﻿using SistemaRestaurante.Data;
-using SistemaRestaurante.Models;
 
 namespace SistemaRestaurante.Forms
 {
 	public partial class FrmInicio : Form
 	{
+		private readonly RestauranteContext _context;
 		public FrmInicio()
 		{
 			InitializeComponent();
 
 			// Carga garantizada de datos al instanciar el formulario
 			CargarMetricas();
+			CargarPedidos();
 		}
 
 		private void FrmInicio_Load(object sender, EventArgs e)
@@ -25,9 +26,9 @@ namespace SistemaRestaurante.Forms
 
 		public void CargarMetricas()
 		{
-			string textoMesas = "4 / 10";
-			string textoPedidos = "3";
-			string textoProductos = "24";
+			string textoMesas = "...";
+			string textoPedidos = "...";
+			string textoProductos = "...";
 
 			try
 			{
@@ -78,10 +79,6 @@ namespace SistemaRestaurante.Forms
 		}
 
 		// Métodos de respaldo para evitar errores con eventos generados por el Diseñador
-		private void panel1_Paint(object sender, PaintEventArgs e)
-		{
-		}
-
 		private void panel1_Paint_1(object sender, PaintEventArgs e)
 		{
 		}
@@ -91,13 +88,29 @@ namespace SistemaRestaurante.Forms
 
 		}
 
-		private void dgvPedidos_CellClick(object sender, DataGridViewCellEventArgs e)
+		private void CargarPedidos()
 		{
-			if (e.RowIndex >= 0)
+			using (var db = new RestauranteContext())
 			{
-				var fila = dgvPedidos.Rows[e.RowIndex];
-				int idPedido = Convert.ToInt32(fila.Cells["Id"].Value);
-				Pedido? pedido = null;
+				var pedidos = db.Pedidos
+			.OrderByDescending(p => p.Fecha)
+			.Take(5)
+			.Select(p => new
+			{
+				Id = p.Id,
+				Mesa = p.Mesa.Numero,
+				Empleado = p.Empleado.Nombre,
+				Cliente = p.Cliente.Nombre,
+				Fecha = p.Fecha,
+				Estado = p.Estado
+			})
+			.ToList();
+
+				dgvPedidos.DataSource = pedidos;
+
+				dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+				dgvPedidos.Columns["Id"].FillWeight = 40;
+				dgvPedidos.Columns["Mesa"].FillWeight = 50;
 			}
 		}
 	}

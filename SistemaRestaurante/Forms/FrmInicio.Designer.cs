@@ -219,19 +219,26 @@
 			panel4.Controls.Add(label2);
 			panel4.Location = new Point(11, 218);
 			panel4.Name = "panel4";
-			panel4.Size = new Size(985, 390);
+			panel4.Size = new Size(985, 412);
 			panel4.TabIndex = 5;
 			// 
 			// dgvPedidos
 			// 
+			dgvPedidos.AllowUserToAddRows = false;
+			dgvPedidos.AllowUserToDeleteRows = false;
+			dgvPedidos.AllowUserToResizeColumns = false;
+			dgvPedidos.AllowUserToResizeRows = false;
+			dgvPedidos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dgvPedidos.BackgroundColor = Color.FromArgb(244, 246, 249);
 			dgvPedidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 			dgvPedidos.Location = new Point(4, 27);
 			dgvPedidos.Name = "dgvPedidos";
+			dgvPedidos.ReadOnly = true;
+			dgvPedidos.RowHeadersVisible = false;
 			dgvPedidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-			dgvPedidos.Size = new Size(978, 360);
+			dgvPedidos.Size = new Size(978, 382);
 			dgvPedidos.TabIndex = 4;
-			dgvPedidos.CellClick += dgvPedidos_CellClick;
 			// 
 			// label2
 			// 

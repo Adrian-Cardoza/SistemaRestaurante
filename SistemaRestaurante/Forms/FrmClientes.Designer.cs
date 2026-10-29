@@ -37,7 +37,9 @@
 			dgvClientes = new DataGridView();
 			btnAgregar = new Button();
 			btnEliminar = new Button();
+			groupBox1 = new GroupBox();
 			((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
+			groupBox1.SuspendLayout();
 			SuspendLayout();
 			// 
 			// lblNombre
@@ -45,7 +47,7 @@
 			lblNombre.AutoSize = true;
 			lblNombre.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblNombre.ForeColor = Color.FromArgb(34, 34, 34);
-			lblNombre.Location = new Point(29, 26);
+			lblNombre.Location = new Point(25, 37);
 			lblNombre.Name = "lblNombre";
 			lblNombre.Size = new Size(56, 15);
 			lblNombre.TabIndex = 0;
@@ -54,9 +56,9 @@
 			// txtNombre
 			// 
 			txtNombre.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-			txtNombre.Location = new Point(95, 23);
+			txtNombre.Location = new Point(91, 34);
 			txtNombre.Name = "txtNombre";
-			txtNombre.Size = new Size(207, 23);
+			txtNombre.Size = new Size(540, 23);
 			txtNombre.TabIndex = 1;
 			txtNombre.TextChanged += txtNombre_TextChanged;
 			// 
@@ -65,7 +67,7 @@
 			lblDui.AutoSize = true;
 			lblDui.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblDui.ForeColor = Color.FromArgb(34, 34, 34);
-			lblDui.Location = new Point(29, 58);
+			lblDui.Location = new Point(25, 69);
 			lblDui.Name = "lblDui";
 			lblDui.Size = new Size(32, 15);
 			lblDui.TabIndex = 2;
@@ -76,7 +78,7 @@
 			lblCorreo.AutoSize = true;
 			lblCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblCorreo.ForeColor = Color.FromArgb(34, 34, 34);
-			lblCorreo.Location = new Point(29, 91);
+			lblCorreo.Location = new Point(25, 102);
 			lblCorreo.Name = "lblCorreo";
 			lblCorreo.Size = new Size(48, 15);
 			lblCorreo.TabIndex = 3;
@@ -85,18 +87,18 @@
 			// txtDui
 			// 
 			txtDui.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-			txtDui.Location = new Point(95, 55);
+			txtDui.Location = new Point(91, 66);
 			txtDui.Name = "txtDui";
-			txtDui.Size = new Size(207, 23);
+			txtDui.Size = new Size(540, 23);
 			txtDui.TabIndex = 4;
 			txtDui.TextChanged += txtDui_TextChanged;
 			// 
 			// txtCorreo
 			// 
 			txtCorreo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-			txtCorreo.Location = new Point(95, 88);
+			txtCorreo.Location = new Point(91, 99);
 			txtCorreo.Name = "txtCorreo";
-			txtCorreo.Size = new Size(207, 23);
+			txtCorreo.Size = new Size(540, 23);
 			txtCorreo.TabIndex = 5;
 			txtCorreo.TextChanged += txtCorreo_TextChanged;
 			// 
@@ -106,16 +108,18 @@
 			dgvClientes.AllowUserToDeleteRows = false;
 			dgvClientes.AllowUserToResizeColumns = false;
 			dgvClientes.AllowUserToResizeRows = false;
-			dgvClientes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			dgvClientes.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dgvClientes.BackgroundColor = Color.FromArgb(244, 246, 249);
 			dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvClientes.Location = new Point(29, 136);
+			dgvClientes.Location = new Point(12, 169);
 			dgvClientes.MultiSelect = false;
 			dgvClientes.Name = "dgvClientes";
 			dgvClientes.ReadOnly = true;
 			dgvClientes.RowHeadersVisible = false;
 			dgvClientes.RowHeadersWidth = 62;
 			dgvClientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-			dgvClientes.Size = new Size(415, 174);
+			dgvClientes.Size = new Size(784, 487);
 			dgvClientes.TabIndex = 6;
 			dgvClientes.CellContentClick += dgvClientes_CellContentClick;
 			// 
@@ -127,7 +131,7 @@
 			btnAgregar.FlatStyle = FlatStyle.Flat;
 			btnAgregar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			btnAgregar.ForeColor = Color.FromArgb(34, 34, 34);
-			btnAgregar.Location = new Point(45, 323);
+			btnAgregar.Location = new Point(660, 34);
 			btnAgregar.Name = "btnAgregar";
 			btnAgregar.Size = new Size(107, 34);
 			btnAgregar.TabIndex = 7;
@@ -143,7 +147,7 @@
 			btnEliminar.FlatStyle = FlatStyle.Flat;
 			btnEliminar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			btnEliminar.ForeColor = Color.FromArgb(34, 34, 34);
-			btnEliminar.Location = new Point(325, 323);
+			btnEliminar.Location = new Point(660, 88);
 			btnEliminar.Name = "btnEliminar";
 			btnEliminar.Size = new Size(107, 34);
 			btnEliminar.TabIndex = 8;
@@ -151,28 +155,41 @@
 			btnEliminar.UseVisualStyleBackColor = false;
 			btnEliminar.Click += btnEliminar_Click;
 			// 
+			// groupBox1
+			// 
+			groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			groupBox1.Controls.Add(btnEliminar);
+			groupBox1.Controls.Add(lblNombre);
+			groupBox1.Controls.Add(btnAgregar);
+			groupBox1.Controls.Add(txtNombre);
+			groupBox1.Controls.Add(lblDui);
+			groupBox1.Controls.Add(txtCorreo);
+			groupBox1.Controls.Add(lblCorreo);
+			groupBox1.Controls.Add(txtDui);
+			groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+			groupBox1.Location = new Point(12, 12);
+			groupBox1.Name = "groupBox1";
+			groupBox1.Size = new Size(784, 151);
+			groupBox1.TabIndex = 9;
+			groupBox1.TabStop = false;
+			groupBox1.Text = "Nuevo Cliente";
+			// 
 			// FrmClientes
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.FromArgb(244, 246, 249);
-			ClientSize = new Size(475, 369);
-			Controls.Add(btnEliminar);
-			Controls.Add(btnAgregar);
+			ClientSize = new Size(808, 668);
 			Controls.Add(dgvClientes);
-			Controls.Add(txtCorreo);
-			Controls.Add(txtDui);
-			Controls.Add(lblCorreo);
-			Controls.Add(lblDui);
-			Controls.Add(txtNombre);
-			Controls.Add(lblNombre);
+			Controls.Add(groupBox1);
 			Name = "FrmClientes";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Registro de Clientes";
 			Load += FrmClientes_Load;
 			((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
+			groupBox1.ResumeLayout(false);
+			groupBox1.PerformLayout();
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion
@@ -186,5 +203,6 @@
         private DataGridView dgvClientes;
         private Button btnAgregar;
         private Button btnEliminar;
-    }
+		private GroupBox groupBox1;
+	}
 }

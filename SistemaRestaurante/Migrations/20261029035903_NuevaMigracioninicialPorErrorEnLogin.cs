@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace SistemaRestaurante.Migrations
 {
     /// <inheritdoc />
-    public partial class IniciarSistemaRestaurante : Migration
+    public partial class NuevaMigracioninicialPorErrorEnLogin : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +35,8 @@ namespace SistemaRestaurante.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rol = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -156,6 +160,20 @@ namespace SistemaRestaurante.Migrations
                         principalTable: "Mesas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Clientes",
+                columns: new[] { "Id", "Correo", "DUI", "Nombre" },
+                values: new object[] { 1, "juan.perez@example.com", 12345678, "Juan Perez" });
+
+            migrationBuilder.InsertData(
+                table: "Empleados",
+                columns: new[] { "Id", "Contraseña", "Nombre", "Rol", "Usuario" },
+                values: new object[,]
+                {
+                    { 1, "123", "Adrian", "Administrador", "admin" },
+                    { 2, "123", "Elvis", "Mesero", "mesero" }
                 });
 
             migrationBuilder.CreateIndex(

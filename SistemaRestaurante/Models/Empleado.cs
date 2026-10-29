@@ -6,12 +6,11 @@ namespace SistemaRestaurante.Models
 	{
 		[Key]
 		public int Id { get; set; }
-
 		[Required]
 		[MaxLength(100)]
-
 		public string Nombre { get; set; }
-
+		public string Usuario { get; set; }
+		public string Contraseña { get; set; }
 		[Required]
 		[MaxLength(50)]
 		public string Rol { get; set; }

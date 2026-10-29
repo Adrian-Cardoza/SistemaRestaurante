@@ -1,104 +1,170 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Forms;
-using SistemaRestaurante.Data;
+﻿using SistemaRestaurante.Data;
 using SistemaRestaurante.Models;
 
 namespace SistemaRestaurante.Forms
 {
-    public partial class FrmMesas : Form
-    {
-        public FrmMesas()
-        {
-            InitializeComponent();
-            this.Load += FrmMesas_Load;
-            dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
-            GuardarBtn.Click += GuardarBtn_Click;
-            CambiarEstadoBtn.Click += CambiarEstadoBtn_Click;
-            LimpiarCamposBtn.Click += LimpiarCamposBtn_Click;
-        }
+	public partial class FrmMesas : Form
+	{
+		private bool esSeleccionProgramatica = false;
+		private int idMesaSeleccionada = 0;
+		private bool estaCargando = true;
 
-        private void CargarMesas(string filtro = "")
-        {
-            using var context = new RestauranteContext();
-            var query = context.Mesas.AsQueryable();
+		public FrmMesas()
+		{
+			InitializeComponent();
+			this.Load += FrmMesas_Load;
+			this.Shown += FrmMesas_Shown;
+			dataGridView1.SelectionChanged += DataGridView1_SelectionChanged;
+			GuardarBtn.Click += GuardarBtn_Click;
+			CambiarEstadoBtn.Click += CambiarEstadoBtn_Click;
+			LimpiarCamposBtn.Click += LimpiarCamposBtn_Click;
+		}
 
-            if (!string.IsNullOrWhiteSpace(filtro) && filtro != "Buscar mesa...")
-            {
-                query = query.Where(m => m.Numero.ToString().Contains(filtro)
-                                       || m.Estado.Contains(filtro));
-            }
+		private void CargarMesas(string filtro = "")
+		{
+			using var context = new RestauranteContext();
+			var query = context.Mesas.AsQueryable();
 
-            dataGridView1.DataSource = query.ToList();
-        }
+			if (!string.IsNullOrWhiteSpace(filtro) && filtro != "Buscar mesa...")
+			{
+				query = query.Where(m => m.Numero.ToString().Contains(filtro)
+									   || m.Estado.Contains(filtro));
+			}
 
-        private void FrmMesas_Load(object sender, EventArgs e)
-        {
-            CargarMesas();
-        }
+			esSeleccionProgramatica = true;
+			dataGridView1.DataSource = query.ToList();
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            CargarMesas(textBox1.Text);
-        }
+			dataGridView1.ClearSelection();
+			dataGridView1.CurrentCell = null;
 
-        private void DataGridView1_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow?.DataBoundItem is Mesa mesa)
-            {
-                numericUpDown1.Value = mesa.Numero;
-                numericUpDown2.Value = mesa.Capacidad;
-                EstadoMesa.SelectedItem = mesa.Estado;
-            }
-        }
+			esSeleccionProgramatica = false;
 
-        private void GuardarBtn_Click(object sender, EventArgs e)
-        {
-            using var context = new RestauranteContext();
+			LimpiarCampos();
+		}
 
-            Mesa mesa;
-            if (dataGridView1.CurrentRow?.DataBoundItem is Mesa seleccionada)
-            {
-                mesa = context.Mesas.Find(seleccionada.Id);
-            }
-            else
-            {
-                mesa = new Mesa();
-                context.Mesas.Add(mesa);
-            }
+		private void FrmMesas_Load(object sender, EventArgs e)
+		{
+			estaCargando = true;
+			EstadoMesa.Items.Clear();
+			EstadoMesa.Items.Add("Disponible");
+			EstadoMesa.Items.Add("Ocupada");
+			EstadoMesa.Items.Add("Reservada");
 
-            mesa.Numero = (int)numericUpDown1.Value;
-            mesa.Capacidad = (int)numericUpDown2.Value;
-            mesa.Estado = EstadoMesa.SelectedItem?.ToString() ?? "Libre";
+			dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dataGridView1.RowHeadersVisible = false;
 
-            context.SaveChanges();
-            CargarMesas();
-            LimpiarCamposBtn_Click(sender, e);
-        }
+			CargarMesas();
+		}
 
-        private void CambiarEstadoBtn_Click(object sender, EventArgs e)
-        {
-            if (dataGridView1.CurrentRow?.DataBoundItem is not Mesa seleccionada)
-            {
-                MessageBox.Show("Selecciona una mesa primero.");
-                return;
-            }
+		private void FrmMesas_Shown(object sender, EventArgs e)
+		{
+			dataGridView1.ClearSelection();
+			dataGridView1.CurrentCell = null;
+			LimpiarCampos();
+			estaCargando = false;
+		}
 
-            using var context = new RestauranteContext();
-            var mesa = context.Mesas.Find(seleccionada.Id);
-            mesa.Estado = EstadoMesa.SelectedItem?.ToString() ?? mesa.Estado;
-            context.SaveChanges();
+		private void textBox1_TextChanged(object sender, EventArgs e)
+		{
+			CargarMesas(textBox1.Text);
+		}
 
-            CargarMesas();
-        }
+		private void DataGridView1_SelectionChanged(object sender, EventArgs e)
+		{
+			if (estaCargando || esSeleccionProgramatica || dataGridView1.SelectedRows.Count == 0)
+				return;
 
-        private void LimpiarCamposBtn_Click(object sender, EventArgs e)
-        {
-            numericUpDown1.Value = 0;
-            numericUpDown2.Value = 0;
-            EstadoMesa.SelectedIndex = -1;
-            dataGridView1.ClearSelection();
-            dataGridView1.CurrentCell = null;
-        }
-    }
+			if (dataGridView1.CurrentRow?.DataBoundItem is Mesa mesa)
+			{
+				idMesaSeleccionada = mesa.Id;
+				numericUpDown1.Value = mesa.Numero >= numericUpDown1.Minimum && mesa.Numero <= numericUpDown1.Maximum ? mesa.Numero : numericUpDown1.Minimum;
+				numericUpDown2.Value = mesa.Capacidad >= numericUpDown2.Minimum && mesa.Capacidad <= numericUpDown2.Maximum ? mesa.Capacidad : numericUpDown2.Minimum;
+				EstadoMesa.SelectedItem = mesa.Estado;
+			}
+		}
+
+		private void GuardarBtn_Click(object sender, EventArgs e)
+		{
+			int numeroMesa = (int)numericUpDown1.Value;
+			int capacidad = (int)numericUpDown2.Value;
+
+			if (numeroMesa <= 0 || capacidad <= 0)
+			{
+				MessageBox.Show("Por favor, ingresa un número de mesa y una capacidad mayores a 0.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			using var context = new RestauranteContext();
+
+			bool numeroDuplicado = context.Mesas.Any(m => m.Numero == numeroMesa && m.Id != idMesaSeleccionada);
+
+			if (numeroDuplicado)
+			{
+				MessageBox.Show($"Ya existe otra mesa registrada con el número {numeroMesa}. Por favor, elige un número diferente.", "Número Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			Mesa mesa;
+			if (idMesaSeleccionada > 0)
+			{
+				mesa = context.Mesas.Find(idMesaSeleccionada);
+			}
+			else
+			{
+				mesa = new Mesa();
+				context.Mesas.Add(mesa);
+			}
+
+			mesa.Numero = numeroMesa;
+			mesa.Capacidad = capacidad;
+			mesa.Estado = EstadoMesa.SelectedItem?.ToString() ?? "Disponible";
+
+			context.SaveChanges();
+
+			MessageBox.Show("Mesa guardada exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			CargarMesas();
+		}
+
+		private void CambiarEstadoBtn_Click(object sender, EventArgs e)
+		{
+			if (idMesaSeleccionada == 0)
+			{
+				MessageBox.Show("Por favor, selecciona una mesa del listado para cambiar su estado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			using var context = new RestauranteContext();
+			var mesa = context.Mesas.Find(idMesaSeleccionada);
+
+			if (mesa != null)
+			{
+				mesa.Estado = EstadoMesa.SelectedItem?.ToString() ?? "Disponible";
+				context.SaveChanges();
+				MessageBox.Show("Estado de la mesa actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+
+			CargarMesas();
+		}
+
+		private void LimpiarCamposBtn_Click(object sender, EventArgs e)
+		{
+			LimpiarCampos();
+			dataGridView1.ClearSelection();
+			dataGridView1.CurrentCell = null;
+		}
+
+		private void LimpiarCampos()
+		{
+			esSeleccionProgramatica = true;
+
+			idMesaSeleccionada = 0;
+			numericUpDown1.Value = 0;
+			numericUpDown2.Value = 0;
+			EstadoMesa.SelectedItem = "Disponible";
+
+			esSeleccionProgramatica = false;
+		}
+	}
 }

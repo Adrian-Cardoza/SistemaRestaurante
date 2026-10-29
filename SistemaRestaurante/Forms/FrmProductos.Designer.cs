@@ -140,13 +140,22 @@
 			// 
 			// dgvProductos
 			// 
-			dgvProductos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			dgvProductos.AllowUserToAddRows = false;
+			dgvProductos.AllowUserToDeleteRows = false;
+			dgvProductos.AllowUserToResizeColumns = false;
+			dgvProductos.AllowUserToResizeRows = false;
+			dgvProductos.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			dgvProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dgvProductos.BackgroundColor = Color.FromArgb(244, 246, 249);
 			dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvProductos.Location = new Point(5, 313);
+			dgvProductos.Location = new Point(11, 295);
 			dgvProductos.Margin = new Padding(2);
 			dgvProductos.Name = "dgvProductos";
+			dgvProductos.ReadOnly = true;
+			dgvProductos.RowHeadersVisible = false;
 			dgvProductos.RowHeadersWidth = 62;
-			dgvProductos.Size = new Size(756, 101);
+			dgvProductos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgvProductos.Size = new Size(786, 362);
 			dgvProductos.TabIndex = 8;
 			dgvProductos.CellClick += dgvProductos_CellContentClick;
 			// 
@@ -156,7 +165,7 @@
 			btnEliminar.BackColor = Color.Firebrick;
 			btnEliminar.FlatAppearance.BorderSize = 0;
 			btnEliminar.FlatStyle = FlatStyle.Flat;
-			btnEliminar.Location = new Point(595, 146);
+			btnEliminar.Location = new Point(619, 146);
 			btnEliminar.Margin = new Padding(2);
 			btnEliminar.Name = "btnEliminar";
 			btnEliminar.Size = new Size(161, 32);
@@ -167,6 +176,7 @@
 			// 
 			// groupBox1
 			// 
+			groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
 			groupBox1.Controls.Add(btnNuevo);
 			groupBox1.Controls.Add(btnEditar);
 			groupBox1.Controls.Add(lblDisponible);
@@ -181,11 +191,11 @@
 			groupBox1.Controls.Add(label3);
 			groupBox1.FlatStyle = FlatStyle.Flat;
 			groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			groupBox1.Location = new Point(5, 44);
+			groupBox1.Location = new Point(12, 34);
 			groupBox1.Margin = new Padding(3, 2, 3, 2);
 			groupBox1.Name = "groupBox1";
 			groupBox1.Padding = new Padding(3, 2, 3, 2);
-			groupBox1.Size = new Size(760, 191);
+			groupBox1.Size = new Size(784, 191);
 			groupBox1.TabIndex = 10;
 			groupBox1.TabStop = false;
 			groupBox1.Text = "Nuevo Producto";
@@ -245,7 +255,7 @@
 			// 
 			lblListado.AutoSize = true;
 			lblListado.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-			lblListado.Location = new Point(5, 248);
+			lblListado.Location = new Point(11, 241);
 			lblListado.Margin = new Padding(2, 0, 2, 0);
 			lblListado.Name = "lblListado";
 			lblListado.Size = new Size(200, 25);
@@ -254,19 +264,19 @@
 			// 
 			// txtBuscarProducto
 			// 
-			txtBuscarProducto.Location = new Point(5, 281);
+			txtBuscarProducto.Location = new Point(11, 268);
 			txtBuscarProducto.Margin = new Padding(2);
 			txtBuscarProducto.Name = "txtBuscarProducto";
 			txtBuscarProducto.Size = new Size(322, 23);
 			txtBuscarProducto.TabIndex = 13;
 			txtBuscarProducto.TextChanged += txtBuscarProducto_TextChanged;
 			// 
-			// FormProductos
+			// FrmProductos
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			BackColor = Color.SkyBlue;
-			ClientSize = new Size(772, 430);
+			BackColor = Color.FromArgb(244, 246, 249);
+			ClientSize = new Size(808, 668);
 			Controls.Add(txtBuscarProducto);
 			Controls.Add(lblListado);
 			Controls.Add(lblGestionProductos);
@@ -275,7 +285,7 @@
 			FormBorderStyle = FormBorderStyle.FixedSingle;
 			Margin = new Padding(2);
 			MaximizeBox = false;
-			Name = "FormProductos";
+			Name = "FrmProductos";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Registro de Productos";
 			((System.ComponentModel.ISupportInitialize)dgvProductos).EndInit();

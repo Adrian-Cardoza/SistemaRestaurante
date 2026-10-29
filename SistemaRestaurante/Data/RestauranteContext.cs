@@ -81,6 +81,25 @@ namespace SistemaRestaurante.Data
 					Correo = "juan.perez@example.com",
 				}
 			);
+
+			modelBuilder.Entity<Empleado>().HasData(
+				new Empleado
+				{
+					Id = 1,
+					Nombre = "Adrian",
+					Usuario = "admin",
+					Contraseña = "123",
+					Rol = "Administrador"
+				},
+				new Empleado
+				{
+					Id = 2,
+					Nombre = "Elvis",
+					Usuario = "mesero",
+					Contraseña = "123",
+					Rol = "Mesero"
+				}
+			);
 		}
 	}
 }

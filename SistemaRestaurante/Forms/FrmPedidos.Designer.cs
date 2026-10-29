@@ -29,14 +29,10 @@
 		private void InitializeComponent()
 		{
 			dgvPedidos = new DataGridView();
-			txtBuscar = new TextBox();
-			label1 = new Label();
 			cmbMesa = new ComboBox();
 			lblMesa = new Label();
-			lblEmpleado = new Label();
 			lblCliente = new Label();
 			lblEstado = new Label();
-			cmbEmpleado = new ComboBox();
 			cmbCliente = new ComboBox();
 			cmbEstado = new ComboBox();
 			btnGuardar = new Button();
@@ -46,52 +42,41 @@
 			dtpFecha = new DateTimePicker();
 			rbComerAqui = new RadioButton();
 			rbParaLlevar = new RadioButton();
-			lblProducto = new Label();
-			cmbProducto = new ComboBox();
-			lblCantidad = new Label();
-			nudCantidad = new NumericUpDown();
-			btnAgregar = new Button();
 			dgvDetalles = new DataGridView();
+			groupBox1 = new GroupBox();
+			label2 = new Label();
+			flpProductos = new FlowLayoutPanel();
+			groupBox2 = new GroupBox();
 			((System.ComponentModel.ISupportInitialize)dgvPedidos).BeginInit();
-			((System.ComponentModel.ISupportInitialize)nudCantidad).BeginInit();
 			((System.ComponentModel.ISupportInitialize)dgvDetalles).BeginInit();
+			groupBox1.SuspendLayout();
+			groupBox2.SuspendLayout();
 			SuspendLayout();
 			// 
 			// dgvPedidos
 			// 
-			dgvPedidos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+			dgvPedidos.AllowUserToAddRows = false;
+			dgvPedidos.AllowUserToDeleteRows = false;
+			dgvPedidos.AllowUserToResizeColumns = false;
+			dgvPedidos.AllowUserToResizeRows = false;
+			dgvPedidos.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+			dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dgvPedidos.BackgroundColor = Color.FromArgb(244, 246, 249);
 			dgvPedidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvPedidos.Location = new Point(260, 218);
+			dgvPedidos.Location = new Point(4, 20);
 			dgvPedidos.Margin = new Padding(1);
 			dgvPedidos.Name = "dgvPedidos";
+			dgvPedidos.ReadOnly = true;
 			dgvPedidos.RowHeadersVisible = false;
 			dgvPedidos.RowHeadersWidth = 62;
-			dgvPedidos.Size = new Size(357, 212);
+			dgvPedidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgvPedidos.Size = new Size(555, 184);
 			dgvPedidos.TabIndex = 0;
-			// 
-			// txtBuscar
-			// 
-			txtBuscar.Location = new Point(94, 6);
-			txtBuscar.Margin = new Padding(1);
-			txtBuscar.Name = "txtBuscar";
-			txtBuscar.Size = new Size(525, 23);
-			txtBuscar.TabIndex = 1;
-			txtBuscar.TextChanged += txtBuscar_TextChanged;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.Location = new Point(10, 9);
-			label1.Margin = new Padding(1, 0, 1, 0);
-			label1.Name = "label1";
-			label1.Size = new Size(82, 15);
-			label1.TabIndex = 2;
-			label1.Text = "Buscar Pedido";
 			// 
 			// cmbMesa
 			// 
 			cmbMesa.FormattingEnabled = true;
-			cmbMesa.Location = new Point(51, 77);
+			cmbMesa.Location = new Point(49, 27);
 			cmbMesa.Margin = new Padding(1);
 			cmbMesa.Name = "cmbMesa";
 			cmbMesa.Size = new Size(129, 23);
@@ -102,31 +87,19 @@
 			lblMesa.AutoSize = true;
 			lblMesa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblMesa.ForeColor = Color.FromArgb(34, 34, 34);
-			lblMesa.Location = new Point(13, 80);
+			lblMesa.Location = new Point(11, 30);
 			lblMesa.Margin = new Padding(1, 0, 1, 0);
 			lblMesa.Name = "lblMesa";
 			lblMesa.Size = new Size(36, 15);
 			lblMesa.TabIndex = 4;
 			lblMesa.Text = "Mesa";
 			// 
-			// lblEmpleado
-			// 
-			lblEmpleado.AutoSize = true;
-			lblEmpleado.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			lblEmpleado.ForeColor = Color.FromArgb(34, 34, 34);
-			lblEmpleado.Location = new Point(191, 80);
-			lblEmpleado.Margin = new Padding(1, 0, 1, 0);
-			lblEmpleado.Name = "lblEmpleado";
-			lblEmpleado.Size = new Size(61, 15);
-			lblEmpleado.TabIndex = 5;
-			lblEmpleado.Text = "Empleado";
-			// 
 			// lblCliente
 			// 
 			lblCliente.AutoSize = true;
 			lblCliente.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblCliente.ForeColor = Color.FromArgb(34, 34, 34);
-			lblCliente.Location = new Point(399, 80);
+			lblCliente.Location = new Point(194, 30);
 			lblCliente.Margin = new Padding(1, 0, 1, 0);
 			lblCliente.Name = "lblCliente";
 			lblCliente.Size = new Size(46, 15);
@@ -138,38 +111,29 @@
 			lblEstado.AutoSize = true;
 			lblEstado.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblEstado.ForeColor = Color.FromArgb(34, 34, 34);
-			lblEstado.Location = new Point(323, 127);
+			lblEstado.Location = new Point(387, 30);
 			lblEstado.Margin = new Padding(1, 0, 1, 0);
 			lblEstado.Name = "lblEstado";
 			lblEstado.Size = new Size(43, 15);
 			lblEstado.TabIndex = 7;
 			lblEstado.Text = "Estado";
 			// 
-			// cmbEmpleado
-			// 
-			cmbEmpleado.FormattingEnabled = true;
-			cmbEmpleado.Location = new Point(254, 77);
-			cmbEmpleado.Margin = new Padding(1);
-			cmbEmpleado.Name = "cmbEmpleado";
-			cmbEmpleado.Size = new Size(129, 23);
-			cmbEmpleado.TabIndex = 8;
-			// 
 			// cmbCliente
 			// 
 			cmbCliente.FormattingEnabled = true;
-			cmbCliente.Location = new Point(447, 77);
+			cmbCliente.Location = new Point(242, 27);
 			cmbCliente.Margin = new Padding(1);
 			cmbCliente.Name = "cmbCliente";
-			cmbCliente.Size = new Size(172, 23);
+			cmbCliente.Size = new Size(122, 23);
 			cmbCliente.TabIndex = 9;
 			// 
 			// cmbEstado
 			// 
 			cmbEstado.FormattingEnabled = true;
-			cmbEstado.Location = new Point(368, 124);
+			cmbEstado.Location = new Point(432, 27);
 			cmbEstado.Margin = new Padding(1);
 			cmbEstado.Name = "cmbEstado";
-			cmbEstado.Size = new Size(129, 23);
+			cmbEstado.Size = new Size(127, 23);
 			cmbEstado.TabIndex = 10;
 			// 
 			// btnGuardar
@@ -179,10 +143,10 @@
 			btnGuardar.FlatAppearance.BorderSize = 0;
 			btnGuardar.FlatStyle = FlatStyle.Flat;
 			btnGuardar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			btnGuardar.Location = new Point(196, 463);
+			btnGuardar.Location = new Point(648, 472);
 			btnGuardar.Margin = new Padding(1);
 			btnGuardar.Name = "btnGuardar";
-			btnGuardar.Size = new Size(78, 20);
+			btnGuardar.Size = new Size(97, 45);
 			btnGuardar.TabIndex = 12;
 			btnGuardar.Text = "Guardar";
 			btnGuardar.UseVisualStyleBackColor = false;
@@ -195,10 +159,10 @@
 			btnEditar.FlatAppearance.BorderSize = 0;
 			btnEditar.FlatStyle = FlatStyle.Flat;
 			btnEditar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			btnEditar.Location = new Point(297, 463);
+			btnEditar.Location = new Point(648, 529);
 			btnEditar.Margin = new Padding(1);
 			btnEditar.Name = "btnEditar";
-			btnEditar.Size = new Size(78, 20);
+			btnEditar.Size = new Size(97, 45);
 			btnEditar.TabIndex = 13;
 			btnEditar.Text = "Editar";
 			btnEditar.UseVisualStyleBackColor = false;
@@ -211,21 +175,20 @@
 			btnCancelar.FlatAppearance.BorderSize = 0;
 			btnCancelar.FlatStyle = FlatStyle.Flat;
 			btnCancelar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			btnCancelar.Location = new Point(399, 463);
+			btnCancelar.Location = new Point(648, 586);
 			btnCancelar.Margin = new Padding(1);
 			btnCancelar.Name = "btnCancelar";
-			btnCancelar.Size = new Size(78, 20);
+			btnCancelar.Size = new Size(97, 45);
 			btnCancelar.TabIndex = 14;
 			btnCancelar.Text = "Cancelar";
 			btnCancelar.UseVisualStyleBackColor = false;
-			btnCancelar.Click += btnCancelar_Click;
 			// 
 			// lblFecha
 			// 
 			lblFecha.AutoSize = true;
 			lblFecha.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblFecha.ForeColor = Color.FromArgb(34, 34, 34);
-			lblFecha.Location = new Point(10, 127);
+			lblFecha.Location = new Point(302, 66);
 			lblFecha.Margin = new Padding(1, 0, 1, 0);
 			lblFecha.Name = "lblFecha";
 			lblFecha.Size = new Size(39, 15);
@@ -234,16 +197,17 @@
 			// 
 			// dtpFecha
 			// 
-			dtpFecha.Location = new Point(53, 124);
+			dtpFecha.Location = new Point(345, 60);
 			dtpFecha.Margin = new Padding(3, 2, 3, 2);
 			dtpFecha.Name = "dtpFecha";
-			dtpFecha.Size = new Size(255, 23);
+			dtpFecha.Size = new Size(214, 23);
 			dtpFecha.TabIndex = 16;
 			// 
 			// rbComerAqui
 			// 
 			rbComerAqui.AutoSize = true;
-			rbComerAqui.Location = new Point(180, 43);
+			rbComerAqui.Font = new Font("Segoe UI", 9F);
+			rbComerAqui.Location = new Point(87, 64);
 			rbComerAqui.Name = "rbComerAqui";
 			rbComerAqui.Size = new Size(87, 19);
 			rbComerAqui.TabIndex = 19;
@@ -255,7 +219,8 @@
 			// rbParaLlevar
 			// 
 			rbParaLlevar.AutoSize = true;
-			rbParaLlevar.Location = new Point(304, 43);
+			rbParaLlevar.Font = new Font("Segoe UI", 9F);
+			rbParaLlevar.Location = new Point(180, 64);
 			rbParaLlevar.Name = "rbParaLlevar";
 			rbParaLlevar.Size = new Size(79, 19);
 			rbParaLlevar.TabIndex = 20;
@@ -264,119 +229,109 @@
 			rbParaLlevar.UseVisualStyleBackColor = true;
 			rbParaLlevar.CheckedChanged += rbParaLlevar_CheckedChanged;
 			// 
-			// lblProducto
-			// 
-			lblProducto.AutoSize = true;
-			lblProducto.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			lblProducto.ForeColor = Color.FromArgb(34, 34, 34);
-			lblProducto.Location = new Point(34, 177);
-			lblProducto.Margin = new Padding(1, 0, 1, 0);
-			lblProducto.Name = "lblProducto";
-			lblProducto.Size = new Size(58, 15);
-			lblProducto.TabIndex = 21;
-			lblProducto.Text = "Producto";
-			// 
-			// cmbProducto
-			// 
-			cmbProducto.FormattingEnabled = true;
-			cmbProducto.Location = new Point(94, 174);
-			cmbProducto.Margin = new Padding(1);
-			cmbProducto.Name = "cmbProducto";
-			cmbProducto.Size = new Size(129, 23);
-			cmbProducto.TabIndex = 22;
-			// 
-			// lblCantidad
-			// 
-			lblCantidad.AutoSize = true;
-			lblCantidad.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-			lblCantidad.ForeColor = Color.FromArgb(34, 34, 34);
-			lblCantidad.Location = new Point(260, 177);
-			lblCantidad.Margin = new Padding(1, 0, 1, 0);
-			lblCantidad.Name = "lblCantidad";
-			lblCantidad.Size = new Size(35, 15);
-			lblCantidad.TabIndex = 23;
-			lblCantidad.Text = "Cant.";
-			// 
-			// nudCantidad
-			// 
-			nudCantidad.Location = new Point(299, 174);
-			nudCantidad.Name = "nudCantidad";
-			nudCantidad.Size = new Size(120, 23);
-			nudCantidad.TabIndex = 24;
-			// 
-			// btnAgregar
-			// 
-			btnAgregar.BackColor = Color.LightBlue;
-			btnAgregar.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-			btnAgregar.Location = new Point(447, 174);
-			btnAgregar.Name = "btnAgregar";
-			btnAgregar.Size = new Size(30, 23);
-			btnAgregar.TabIndex = 25;
-			btnAgregar.Text = "+";
-			btnAgregar.UseVisualStyleBackColor = false;
-			btnAgregar.Click += btnAgregarProducto_Click;
-			// 
 			// dgvDetalles
 			// 
+			dgvDetalles.AllowUserToAddRows = false;
+			dgvDetalles.AllowUserToDeleteRows = false;
+			dgvDetalles.AllowUserToResizeColumns = false;
+			dgvDetalles.AllowUserToResizeRows = false;
+			dgvDetalles.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+			dgvDetalles.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			dgvDetalles.BackgroundColor = Color.FromArgb(244, 246, 249);
 			dgvDetalles.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			dgvDetalles.Location = new Point(10, 218);
+			dgvDetalles.Location = new Point(581, 12);
 			dgvDetalles.Name = "dgvDetalles";
-			dgvDetalles.Size = new Size(240, 212);
+			dgvDetalles.ReadOnly = true;
+			dgvDetalles.RowHeadersVisible = false;
+			dgvDetalles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			dgvDetalles.Size = new Size(223, 430);
 			dgvDetalles.TabIndex = 26;
+			// 
+			// groupBox1
+			// 
+			groupBox1.Controls.Add(label2);
+			groupBox1.Controls.Add(lblMesa);
+			groupBox1.Controls.Add(cmbMesa);
+			groupBox1.Controls.Add(lblCliente);
+			groupBox1.Controls.Add(cmbCliente);
+			groupBox1.Controls.Add(rbComerAqui);
+			groupBox1.Controls.Add(rbParaLlevar);
+			groupBox1.Controls.Add(lblFecha);
+			groupBox1.Controls.Add(dtpFecha);
+			groupBox1.Controls.Add(cmbEstado);
+			groupBox1.Controls.Add(lblEstado);
+			groupBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+			groupBox1.Location = new Point(10, 12);
+			groupBox1.Name = "groupBox1";
+			groupBox1.Size = new Size(565, 105);
+			groupBox1.TabIndex = 27;
+			groupBox1.TabStop = false;
+			groupBox1.Text = "Nueva Orden";
+			// 
+			// label2
+			// 
+			label2.AutoSize = true;
+			label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+			label2.ForeColor = Color.FromArgb(34, 34, 34);
+			label2.Location = new Point(11, 66);
+			label2.Margin = new Padding(1, 0, 1, 0);
+			label2.Name = "label2";
+			label2.Size = new Size(72, 15);
+			label2.TabIndex = 28;
+			label2.Text = "Tipo Pedido";
+			// 
+			// flpProductos
+			// 
+			flpProductos.AutoScroll = true;
+			flpProductos.Location = new Point(12, 123);
+			flpProductos.Name = "flpProductos";
+			flpProductos.Size = new Size(563, 319);
+			flpProductos.TabIndex = 28;
+			// 
+			// groupBox2
+			// 
+			groupBox2.Controls.Add(dgvPedidos);
+			groupBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+			groupBox2.Location = new Point(12, 448);
+			groupBox2.Name = "groupBox2";
+			groupBox2.Size = new Size(563, 208);
+			groupBox2.TabIndex = 29;
+			groupBox2.TabStop = false;
+			groupBox2.Text = "Historial de Pedidos";
 			// 
 			// FrmPedidos
 			// 
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = Color.FromArgb(244, 246, 249);
-			ClientSize = new Size(627, 519);
+			ClientSize = new Size(808, 668);
+			Controls.Add(groupBox2);
+			Controls.Add(flpProductos);
+			Controls.Add(groupBox1);
 			Controls.Add(dgvDetalles);
-			Controls.Add(btnAgregar);
-			Controls.Add(nudCantidad);
-			Controls.Add(lblCantidad);
-			Controls.Add(cmbProducto);
-			Controls.Add(lblProducto);
-			Controls.Add(rbParaLlevar);
-			Controls.Add(rbComerAqui);
-			Controls.Add(dtpFecha);
-			Controls.Add(lblFecha);
 			Controls.Add(btnCancelar);
 			Controls.Add(btnEditar);
 			Controls.Add(btnGuardar);
-			Controls.Add(cmbEstado);
-			Controls.Add(cmbCliente);
-			Controls.Add(cmbEmpleado);
-			Controls.Add(lblEstado);
-			Controls.Add(lblCliente);
-			Controls.Add(lblEmpleado);
-			Controls.Add(lblMesa);
-			Controls.Add(cmbMesa);
-			Controls.Add(label1);
-			Controls.Add(txtBuscar);
-			Controls.Add(dgvPedidos);
 			Margin = new Padding(1);
 			Name = "FrmPedidos";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Pedidos";
 			Load += FrmPedidos_Load;
 			((System.ComponentModel.ISupportInitialize)dgvPedidos).EndInit();
-			((System.ComponentModel.ISupportInitialize)nudCantidad).EndInit();
 			((System.ComponentModel.ISupportInitialize)dgvDetalles).EndInit();
+			groupBox1.ResumeLayout(false);
+			groupBox1.PerformLayout();
+			groupBox2.ResumeLayout(false);
 			ResumeLayout(false);
-			PerformLayout();
 		}
 
 		#endregion
 
 		private DataGridView dgvPedidos;
-        private TextBox txtBuscar;
-        private Label label1;
         private ComboBox cmbMesa;
         private Label lblMesa;
-        private Label lblEmpleado;
         private Label lblCliente;
         private Label lblEstado;
-        private ComboBox cmbEmpleado;
         private ComboBox cmbCliente;
         private ComboBox cmbEstado;
         private Button btnGuardar;
@@ -386,11 +341,10 @@
         private DateTimePicker dtpFecha;
 		private RadioButton rbComerAqui;
 		private RadioButton rbParaLlevar;
-		private Label lblProducto;
-		private ComboBox cmbProducto;
-		private Label lblCantidad;
-		private NumericUpDown nudCantidad;
-		private Button btnAgregar;
 		private DataGridView dgvDetalles;
+		private GroupBox groupBox1;
+		private Label label2;
+		private FlowLayoutPanel flpProductos;
+		private GroupBox groupBox2;
 	}
 }
