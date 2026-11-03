@@ -87,7 +87,7 @@ namespace SistemaRestaurante.Data
 				{
 					Id = 1,
 					Nombre = "Adrian",
-					Usuario = "admin",
+					Usuario = "adrian",
 					Contraseña = "123",
 					Rol = "Administrador"
 				},
