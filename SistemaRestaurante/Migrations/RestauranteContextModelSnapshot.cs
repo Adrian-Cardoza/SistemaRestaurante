@@ -122,7 +122,7 @@ namespace SistemaRestaurante.Migrations
                             Contraseña = "123",
                             Nombre = "Adrian",
                             Rol = "Administrador",
-                            Usuario = "admin"
+                            Usuario = "adrian"
                         },
                         new
                         {
