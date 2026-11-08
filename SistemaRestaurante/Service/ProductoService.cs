@@ -29,7 +29,7 @@ namespace SistemaRestaurante.Services
 
         // Método para actualizar un producto existente
         public bool Actualizar(int id, string nombre, decimal precio,
-                               string categoria, bool disponible)
+                               int categoriaId, bool disponible)
         {
             // Buscar el producto por su ID
             var producto = _context.Productos.Find(id);
@@ -42,7 +42,7 @@ namespace SistemaRestaurante.Services
             // Modificar sus propiedades
             producto.Nombre = nombre;
             producto.Precio = precio;
-            producto.Categoria = categoria;
+            producto.CategoriaID = categoriaId;
             producto.Disponible = disponible;
 
             // Guardar los cambios en la base de datos

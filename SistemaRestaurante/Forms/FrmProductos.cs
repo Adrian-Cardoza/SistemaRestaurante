@@ -2,374 +2,376 @@
 using SistemaRestaurante.Models;
 using SistemaRestaurante.Services;
 using System.Globalization;
+
 namespace SistemaRestaurante.Forms
 {
-	public partial class FrmProductos : Form
-	{
-		private ProductoService _service;
-		private int _productoIdSeleccionado = 0;
+    public partial class FrmProductos : Form
+    {
+        private ProductoService _service;
+        private int _productoIdSeleccionado = 0;
+        private Dictionary<int, string> _categorias = new();
 
-		public FrmProductos()
-		{
-			InitializeComponent();
-			_service = new ProductoService(new RestauranteContext());
-			CargarTabla();
-		}
+        public FrmProductos()
+        {
+            InitializeComponent();
+            _service = new ProductoService(new RestauranteContext());
+            CargarCategorias();
+            CargarTabla();
+        }
 
-		private void CargarTabla()
-		{
-			if (_service == null)
-				return;
+        private void CargarCategorias()
+        {
+            using var db = new RestauranteContext();
+            var categorias = db.Categorias.OrderBy(c => c.Nombre).ToList();
 
-			// Obtener todos los productos
-			var productos = _service.ObtenerTodos().ToList();
+            _categorias = categorias.ToDictionary(c => c.ID, c => c.Nombre);
 
-			// Obtener el texto del buscador
-			string busqueda = txtBuscarProducto.Text.Trim();
+            cmbCategoria.DataSource = categorias;
+            cmbCategoria.DisplayMember = "Nombre";
+            cmbCategoria.ValueMember = "ID";
+            cmbCategoria.SelectedIndex = -1;
+        }
 
-			// Filtrar por nombre o categoría
-			if (!string.IsNullOrWhiteSpace(busqueda))
-			{
-				productos = productos.Where(p =>
-					(p.Nombre ?? "").Contains(
-						busqueda,
-						StringComparison.OrdinalIgnoreCase) ||
+        private string NombreCategoria(int id)
+        {
+            return _categorias.TryGetValue(id, out var nombre) ? nombre : "";
+        }
 
-					(p.Categoria ?? "").Contains(
-						busqueda,
-						StringComparison.OrdinalIgnoreCase)
-				).ToList();
-			}
+        private void CargarTabla()
+        {
+            if (_service == null)
+                return;
 
-			// Actualizar la tabla
-			dgvProductos.DataSource = null;
-			dgvProductos.DataSource = productos;
+            // Obtener todos los productos
+            var productos = _service.ObtenerTodos().ToList();
 
-			// Formato del precio en dólares
-			if (dgvProductos.Columns["Precio"] != null)
-			{
-				dgvProductos.Columns["Precio"]
-					.DefaultCellStyle.Format = "$#,##0.00";
-			}
-		}
+            // Obtener el texto del buscador
+            string busqueda = txtBuscarProducto.Text.Trim();
 
-		private void btnGuardar_Click(object sender, EventArgs e)
-		{
-			if (_productoIdSeleccionado != 0)
-			{
-				MessageBox.Show(
-					"Tiene un producto seleccionado. Use Editar para actualizarlo o Nuevo para registrar otro.",
-					"Atención",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Warning);
-				return;
-			}
+            // Filtrar por nombre o categoría
+            if (!string.IsNullOrWhiteSpace(busqueda))
+            {
+                productos = productos.Where(p =>
+                    (p.Nombre ?? "").Contains(
+                        busqueda,
+                        StringComparison.OrdinalIgnoreCase) ||
 
-			try
-			{
-				// 1. Validar que no haya campos vacíos
-				if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-					string.IsNullOrWhiteSpace(txtPrecio.Text) ||
-					string.IsNullOrWhiteSpace(txtCategoria.Text))
-				{
-					MessageBox.Show("Por favor llene todos los campos obligatorios.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
-				}
+                    NombreCategoria(p.CategoriaID).Contains(
+                        busqueda,
+                        StringComparison.OrdinalIgnoreCase)
+                ).ToList();
+            }
 
-				string nombre = txtNombre.Text.Trim();
-				string categoria = txtCategoria.Text.Trim();
+            // Actualizar la tabla
+            dgvProductos.DataSource = null;
+            dgvProductos.DataSource = productos.Select(p => new
+            {
+                p.ID,
+                p.Nombre,
+                p.Precio,
+                Categoria = NombreCategoria(p.CategoriaID),
+                p.CategoriaID,
+                p.Disponible
+            }).ToList();
 
-				// 2. Validar que el NOMBRE solo contenga letras y espacios
-				foreach (char c in nombre)
-				{
-					if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-					{
-						MessageBox.Show("El nombre solo debe contener letras (sin números ni símbolos).", "Nombre Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						txtNombre.Focus();
-						return;
-					}
-				}
+            // Ocultar la columna del ID de categoría
+            if (dgvProductos.Columns["CategoriaID"] != null)
+            {
+                dgvProductos.Columns["CategoriaID"].Visible = false;
+            }
 
-				// 3. Validar que la CATEGORÍA solo contenga letras y espacios
-				foreach (char c in categoria)
-				{
-					if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-					{
-						MessageBox.Show("La categoría solo debe contener letras (sin números ni símbolos).", "Categoría Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-						txtCategoria.Focus();
-						return;
-					}
-				}
+            // Formato del precio en dólares
+            if (dgvProductos.Columns["Precio"] != null)
+            {
+                dgvProductos.Columns["Precio"]
+                    .DefaultCellStyle.Format = "$#,##0.00";
+            }
+        }
 
-				// 4. Validar PRECIO: Reemplaza coma por punto e interpreta decimales correctamente
-				string textoPrecio = txtPrecio.Text.Trim().Replace(',', '.');
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            if (_productoIdSeleccionado != 0)
+            {
+                MessageBox.Show(
+                    "Tiene un producto seleccionado. Use Editar para actualizarlo o Nuevo para registrar otro.",
+                    "Atención",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
 
-				if (!decimal.TryParse(textoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal precio) || precio <= 0)
-				{
-					MessageBox.Show("El precio debe ser un número válido mayor a 0 (ejemplo: 12.50).", "Precio Inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					txtPrecio.Focus();
-					return;
-				}
+            try
+            {
+                // 1. Validar que no haya campos vacíos
+                if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecio.Text) ||
+                    cmbCategoria.SelectedValue == null)
+                {
+                    MessageBox.Show("Por favor llene todos los campos obligatorios.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-				//Validar si ya existe un producto con el mismo nombre
-				bool yaExiste = _service.ObtenerTodos().Any(p => p.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
+                string nombre = txtNombre.Text.Trim();
 
-				if (yaExiste)
-				{
-					MessageBox.Show($"Ya existe un producto registrado con el nombre '{nombre}'. Por favor, utiliza uno diferente.", "Producto Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					txtNombre.Focus();
-					return;
-				}
+                // 2. Validar que el NOMBRE solo contenga letras y espacios
+                foreach (char c in nombre)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show("El nombre solo debe contener letras (sin números ni símbolos).", "Nombre Inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtNombre.Focus();
+                        return;
+                    }
+                }
 
-				// 5. Crear el objeto con los datos correctos
-				var nuevoProducto = new Producto
-				{
-					Nombre = nombre,
-					Precio = precio,
-					Categoria = categoria,
-					Disponible = Disponible.Checked
-				};
+                // 3. Validar PRECIO: Reemplaza coma por punto e interpreta decimales correctamente
+                string textoPrecio = txtPrecio.Text.Trim().Replace(',', '.');
 
-				// 6. Guardar en la base de datos
-				if (_service != null)
-				{
-					_service.Registrar(nuevoProducto);
-					MessageBox.Show("Producto registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (!decimal.TryParse(textoPrecio, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal precio) || precio <= 0)
+                {
+                    MessageBox.Show("El precio debe ser un número válido mayor a 0 (ejemplo: 12.50).", "Precio Inválido", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    txtPrecio.Focus();
+                    return;
+                }
 
-					// Limpiar controles
-					txtNombre.Clear();
-					txtPrecio.Clear();
-					txtCategoria.Clear();
-					Disponible.Checked = true;
-					CargarTabla();
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Ocurrió un error inesperado en el sistema: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-		private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-		{
-			if (e.RowIndex < 0)
-				return;
+                // Validar si ya existe un producto con el mismo nombre
+                bool yaExiste = _service.ObtenerTodos().Any(p => p.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase));
 
-			DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
+                if (yaExiste)
+                {
+                    MessageBox.Show($"Ya existe un producto registrado con el nombre '{nombre}'. Por favor, utiliza uno diferente.", "Producto Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNombre.Focus();
+                    return;
+                }
 
-			_productoIdSeleccionado =
-				Convert.ToInt32(fila.Cells["ID"].Value);
+                // 4. Crear el objeto con los datos correctos
+                var nuevoProducto = new Producto
+                {
+                    Nombre = nombre,
+                    Precio = precio,
+                    CategoriaID = (int)cmbCategoria.SelectedValue,
+                    Disponible = Disponible.Checked
+                };
 
-			txtNombre.Text =
-				Convert.ToString(fila.Cells["Nombre"].Value) ?? "";
+                // 5. Guardar en la base de datos
+                if (_service != null)
+                {
+                    _service.Registrar(nuevoProducto);
+                    MessageBox.Show("Producto registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-			txtPrecio.Text =
-				Convert.ToDecimal(fila.Cells["Precio"].Value)
-				.ToString("0.00", CultureInfo.InvariantCulture);
+                    // Limpiar controles
+                    txtNombre.Clear();
+                    txtPrecio.Clear();
+                    cmbCategoria.SelectedIndex = -1;
+                    Disponible.Checked = true;
+                    CargarTabla();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error inesperado en el sistema: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-			txtCategoria.Text =
-				Convert.ToString(fila.Cells["Categoria"].Value) ?? "";
+        private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
 
-			Disponible.Checked =
-				Convert.ToBoolean(fila.Cells["Disponible"].Value);
-		}
+            DataGridViewRow fila = dgvProductos.Rows[e.RowIndex];
 
-		private void btnEliminar_Click(object sender, EventArgs e)
-		{
-			if (dgvProductos.SelectedRows.Count > 0)
-			{
-				// Obtiene el ID de la fila seleccionada
-				int id = Convert.ToInt32(dgvProductos.SelectedRows[0].Cells["ID"].Value);
+            _productoIdSeleccionado =
+                Convert.ToInt32(fila.Cells["ID"].Value);
 
-				var confirmacion = MessageBox.Show("¿Está seguro de eliminar este producto?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            txtNombre.Text =
+                Convert.ToString(fila.Cells["Nombre"].Value) ?? "";
 
-				if (confirmacion == DialogResult.Yes)
-				{
-					_service.Eliminar(id);
-					MessageBox.Show("Producto eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-					CargarTabla();
-				}
-			}
-			else
-			{
-				MessageBox.Show("Por favor, seleccione una fila completa en la tabla para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-			}
-		}
+            txtPrecio.Text =
+                Convert.ToDecimal(fila.Cells["Precio"].Value)
+                .ToString("0.00", CultureInfo.InvariantCulture);
 
-		private void label4_Click(object sender, EventArgs e)
-		{
+            cmbCategoria.SelectedValue =
+                Convert.ToInt32(fila.Cells["CategoriaID"].Value);
 
-		}
+            Disponible.Checked =
+                Convert.ToBoolean(fila.Cells["Disponible"].Value);
+        }
 
-		private void btnEditar_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				// 1. Verificar que exista un producto seleccionado
-				if (_productoIdSeleccionado == 0)
-				{
-					MessageBox.Show(
-						"Seleccione un producto de la tabla para editar.",
-						"Atención",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Warning);
-					return;
-				}
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvProductos.SelectedRows.Count > 0)
+            {
+                // Obtiene el ID de la fila seleccionada
+                int id = Convert.ToInt32(dgvProductos.SelectedRows[0].Cells["ID"].Value);
 
-				// 2. Validar campos vacíos
-				if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-					string.IsNullOrWhiteSpace(txtPrecio.Text) ||
-					string.IsNullOrWhiteSpace(txtCategoria.Text))
-				{
-					MessageBox.Show(
-						"Por favor llene todos los campos obligatorios.",
-						"Atención",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Warning);
-					return;
-				}
+                var confirmacion = MessageBox.Show("¿Está seguro de eliminar este producto?", "Confirmar Eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-				string nombre = txtNombre.Text.Trim();
-				string categoria = txtCategoria.Text.Trim();
+                if (confirmacion == DialogResult.Yes)
+                {
+                    _service.Eliminar(id);
+                    MessageBox.Show("Producto eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    CargarTabla();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Por favor, seleccione una fila completa en la tabla para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
 
-				// 3. Validar nombre
-				foreach (char c in nombre)
-				{
-					if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-					{
-						MessageBox.Show(
-							"El nombre solo debe contener letras y espacios.",
-							"Nombre inválido",
-							MessageBoxButtons.OK,
-							MessageBoxIcon.Warning);
+        private void label4_Click(object sender, EventArgs e)
+        {
 
-						txtNombre.Focus();
-						return;
-					}
-				}
+        }
 
-				// 4. Validar categoría
-				foreach (char c in categoria)
-				{
-					if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
-					{
-						MessageBox.Show(
-							"La categoría solo debe contener letras y espacios.",
-							"Categoría inválida",
-							MessageBoxButtons.OK,
-							MessageBoxIcon.Warning);
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 1. Verificar que exista un producto seleccionado
+                if (_productoIdSeleccionado == 0)
+                {
+                    MessageBox.Show(
+                        "Seleccione un producto de la tabla para editar.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
-						txtCategoria.Focus();
-						return;
-					}
-				}
+                // 2. Validar campos vacíos
+                if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                    string.IsNullOrWhiteSpace(txtPrecio.Text) ||
+                    cmbCategoria.SelectedValue == null)
+                {
+                    MessageBox.Show(
+                        "Por favor llene todos los campos obligatorios.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
-				// 5. Validar precio
-				string textoPrecio = txtPrecio.Text.Trim().Replace(',', '.');
+                string nombre = txtNombre.Text.Trim();
 
-				if (!decimal.TryParse(
-						textoPrecio,
-						NumberStyles.Any,
-						CultureInfo.InvariantCulture,
-						out decimal precio) || precio <= 0)
-				{
-					MessageBox.Show(
-						"El precio debe ser un número válido mayor a 0.",
-						"Precio inválido",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Error);
+                // 3. Validar nombre
+                foreach (char c in nombre)
+                {
+                    if (!char.IsLetter(c) && !char.IsWhiteSpace(c))
+                    {
+                        MessageBox.Show(
+                            "El nombre solo debe contener letras y espacios.",
+                            "Nombre inválido",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
 
-					txtPrecio.Focus();
-					return;
-				}
+                        txtNombre.Focus();
+                        return;
+                    }
+                }
 
-				// 6. Actualizar el producto seleccionado
-				bool actualizado = _service.Actualizar(
-					_productoIdSeleccionado,
-					nombre,
-					precio,
-					categoria,
-					Disponible.Checked
-				);
+                // 4. Validar precio
+                string textoPrecio = txtPrecio.Text.Trim().Replace(',', '.');
 
-				if (!actualizado)
-				{
-					MessageBox.Show(
-						"El producto seleccionado ya no existe.",
-						"Atención",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Warning);
-					return;
-				}
+                if (!decimal.TryParse(
+                        textoPrecio,
+                        NumberStyles.Any,
+                        CultureInfo.InvariantCulture,
+                        out decimal precio) || precio <= 0)
+                {
+                    MessageBox.Show(
+                        "El precio debe ser un número válido mayor a 0.",
+                        "Precio inválido",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
 
-				// 7. Confirmación
-				MessageBox.Show(
-					"Producto actualizado correctamente.",
-					"Éxito",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Information);
+                    txtPrecio.Focus();
+                    return;
+                }
 
-				// 8. Actualizar tabla
-				CargarTabla();
+                // 5. Actualizar el producto seleccionado
+                bool actualizado = _service.Actualizar(
+                    _productoIdSeleccionado,
+                    nombre,
+                    precio,
+                    (int)cmbCategoria.SelectedValue,
+                    Disponible.Checked
+                );
 
-				// 9. Limpiar los campos
-				txtNombre.Clear();
-				txtPrecio.Clear();
-				txtCategoria.Clear();
+                if (!actualizado)
+                {
+                    MessageBox.Show(
+                        "El producto seleccionado ya no existe.",
+                        "Atención",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
-				Disponible.Checked = true;
-				_productoIdSeleccionado = 0;
+                // 6. Confirmación
+                MessageBox.Show(
+                    "Producto actualizado correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-				dgvProductos.ClearSelection();
-				txtNombre.Focus();
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(
-					"Error al actualizar el producto: " + ex.Message,
-					"Error",
-					MessageBoxButtons.OK,
-					MessageBoxIcon.Error);
-			}
-		}
+                // 7. Actualizar tabla
+                CargarTabla();
 
-		private void btnNuevo_Click(object sender, EventArgs e)
-		{
-			txtNombre.Clear();
-			txtPrecio.Clear();
-			txtCategoria.Clear();
+                // 8. Limpiar los campos
+                txtNombre.Clear();
+                txtPrecio.Clear();
+                cmbCategoria.SelectedIndex = -1;
 
-			Disponible.Checked = true;
+                Disponible.Checked = true;
+                _productoIdSeleccionado = 0;
 
-			dgvProductos.ClearSelection();
+                dgvProductos.ClearSelection();
+                txtNombre.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al actualizar el producto: " + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
 
-			_productoIdSeleccionado = 0;
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+            txtNombre.Clear();
+            txtPrecio.Clear();
+            cmbCategoria.SelectedIndex = -1;
 
-			txtNombre.Focus();
-		}
+            Disponible.Checked = true;
 
-		private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
-		{
-			CargarTabla();
-		}
+            dgvProductos.ClearSelection();
 
-		private void txtNombre_TextChanged(object sender, EventArgs e)
-		{
+            _productoIdSeleccionado = 0;
 
-		}
+            txtNombre.Focus();
+        }
 
-		private void txtCategoria_TextChanged(object sender, EventArgs e)
-		{
+        private void txtBuscarProducto_TextChanged(object sender, EventArgs e)
+        {
+            CargarTabla();
+        }
 
-		}
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
 
-		private void txtPrecio_TextChanged(object sender, EventArgs e)
-		{
+        }
 
-		}
+        private void txtPrecio_TextChanged(object sender, EventArgs e)
+        {
 
-		private void Disponible_CheckedChanged(object sender, EventArgs e)
-		{
+        }
 
-		}
-	}
+        private void Disponible_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

@@ -22,6 +22,51 @@ namespace SistemaRestaurante.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("SistemaRestaurante.Models.Categoria", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Categorias");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Nombre = "Entradas"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Nombre = "Desayunos"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Nombre = "Platos fuertes"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Nombre = "Postres"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            Nombre = "Bebidas"
+                        });
+                });
+
             modelBuilder.Entity("SistemaRestaurante.Models.Cliente", b =>
                 {
                     b.Property<int>("Id")
@@ -248,10 +293,8 @@ namespace SistemaRestaurante.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Categoria")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("CategoriaID")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Disponible")
                         .HasColumnType("bit");
@@ -265,6 +308,8 @@ namespace SistemaRestaurante.Migrations
                         .HasColumnType("decimal(10,2)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CategoriaID");
 
                     b.ToTable("Productos");
                 });
@@ -336,6 +381,22 @@ namespace SistemaRestaurante.Migrations
                     b.Navigation("Factura");
 
                     b.Navigation("Mesa");
+                });
+
+            modelBuilder.Entity("SistemaRestaurante.Models.Producto", b =>
+                {
+                    b.HasOne("SistemaRestaurante.Models.Categoria", "Categoria")
+                        .WithMany("Productos")
+                        .HasForeignKey("CategoriaID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+                });
+
+            modelBuilder.Entity("SistemaRestaurante.Models.Categoria", b =>
+                {
+                    b.Navigation("Productos");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Cliente", b =>

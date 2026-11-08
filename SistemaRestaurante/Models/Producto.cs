@@ -20,8 +20,10 @@ namespace SistemaRestaurante.Models
         public decimal Precio { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string Categoria { get; set; }
+        public int CategoriaID { get; set; }
+
+        [ForeignKey("CategoriaID")]
+        public Categoria Categoria { get; set; }
 
         [Required]
         public bool Disponible { get; set; }

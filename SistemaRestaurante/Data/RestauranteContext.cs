@@ -19,8 +19,9 @@ namespace SistemaRestaurante.Data
 		public DbSet<Factura> Facturas { get; set; }
 		public DbSet<Producto> Productos { get; set; }
 		public DbSet<DetallePedido> DetallesPedidos { get; set; }
+        public DbSet<Categoria> Categorias { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder options)
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
 			if (!options.IsConfigured)
 			{
@@ -72,6 +73,13 @@ namespace SistemaRestaurante.Data
 				.HasForeignKey(dp => dp.IdProducto)
 				.OnDelete(DeleteBehavior.Restrict);
 
+			// Relación Categorías (1) -> Productos (N)
+			modelBuilder.Entity<Producto>()
+				.HasOne(p => p.Categoria)
+				.WithMany(c => c.Productos)
+				.HasForeignKey(p => p.CategoriaID)
+				.OnDelete(DeleteBehavior.Restrict);
+
 			modelBuilder.Entity<Cliente>().HasData(
 				new Cliente
 				{
@@ -100,6 +108,14 @@ namespace SistemaRestaurante.Data
 					Rol = "Mesero"
 				}
 			);
-		}
+            modelBuilder.Entity<Categoria>().HasData(
+				new Categoria { ID = 1, Nombre = "Entradas" },
+				new Categoria { ID = 2, Nombre = "Desayunos" },
+                new Categoria { ID = 3, Nombre = "Platos fuertes" },
+                new Categoria { ID = 4, Nombre = "Postres" },
+				new Categoria { ID = 5, Nombre =  "Bebidas" }
+
+			);
+        }
 	}
 }
