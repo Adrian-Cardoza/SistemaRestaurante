@@ -75,8 +75,9 @@
 			// 
 			// cmbMesa
 			// 
+			cmbMesa.DropDownStyle = ComboBoxStyle.DropDownList;
 			cmbMesa.FormattingEnabled = true;
-			cmbMesa.Location = new Point(49, 27);
+			cmbMesa.Location = new Point(44, 62);
 			cmbMesa.Margin = new Padding(1);
 			cmbMesa.Name = "cmbMesa";
 			cmbMesa.Size = new Size(129, 23);
@@ -87,7 +88,7 @@
 			lblMesa.AutoSize = true;
 			lblMesa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblMesa.ForeColor = Color.FromArgb(34, 34, 34);
-			lblMesa.Location = new Point(11, 30);
+			lblMesa.Location = new Point(6, 65);
 			lblMesa.Margin = new Padding(1, 0, 1, 0);
 			lblMesa.Name = "lblMesa";
 			lblMesa.Size = new Size(36, 15);
@@ -99,7 +100,7 @@
 			lblCliente.AutoSize = true;
 			lblCliente.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblCliente.ForeColor = Color.FromArgb(34, 34, 34);
-			lblCliente.Location = new Point(194, 30);
+			lblCliente.Location = new Point(189, 65);
 			lblCliente.Margin = new Padding(1, 0, 1, 0);
 			lblCliente.Name = "lblCliente";
 			lblCliente.Size = new Size(46, 15);
@@ -111,7 +112,7 @@
 			lblEstado.AutoSize = true;
 			lblEstado.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblEstado.ForeColor = Color.FromArgb(34, 34, 34);
-			lblEstado.Location = new Point(387, 30);
+			lblEstado.Location = new Point(382, 65);
 			lblEstado.Margin = new Padding(1, 0, 1, 0);
 			lblEstado.Name = "lblEstado";
 			lblEstado.Size = new Size(43, 15);
@@ -121,7 +122,7 @@
 			// cmbCliente
 			// 
 			cmbCliente.FormattingEnabled = true;
-			cmbCliente.Location = new Point(242, 27);
+			cmbCliente.Location = new Point(237, 62);
 			cmbCliente.Margin = new Padding(1);
 			cmbCliente.Name = "cmbCliente";
 			cmbCliente.Size = new Size(122, 23);
@@ -130,7 +131,7 @@
 			// cmbEstado
 			// 
 			cmbEstado.FormattingEnabled = true;
-			cmbEstado.Location = new Point(432, 27);
+			cmbEstado.Location = new Point(427, 62);
 			cmbEstado.Margin = new Padding(1);
 			cmbEstado.Name = "cmbEstado";
 			cmbEstado.Size = new Size(127, 23);
@@ -182,13 +183,14 @@
 			btnCancelar.TabIndex = 14;
 			btnCancelar.Text = "Cancelar";
 			btnCancelar.UseVisualStyleBackColor = false;
+			btnCancelar.Click += btnCancelar_Click;
 			// 
 			// lblFecha
 			// 
 			lblFecha.AutoSize = true;
 			lblFecha.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblFecha.ForeColor = Color.FromArgb(34, 34, 34);
-			lblFecha.Location = new Point(302, 66);
+			lblFecha.Location = new Point(297, 29);
 			lblFecha.Margin = new Padding(1, 0, 1, 0);
 			lblFecha.Name = "lblFecha";
 			lblFecha.Size = new Size(39, 15);
@@ -197,7 +199,8 @@
 			// 
 			// dtpFecha
 			// 
-			dtpFecha.Location = new Point(345, 60);
+			dtpFecha.Enabled = false;
+			dtpFecha.Location = new Point(340, 23);
 			dtpFecha.Margin = new Padding(3, 2, 3, 2);
 			dtpFecha.Name = "dtpFecha";
 			dtpFecha.Size = new Size(214, 23);
@@ -207,7 +210,7 @@
 			// 
 			rbComerAqui.AutoSize = true;
 			rbComerAqui.Font = new Font("Segoe UI", 9F);
-			rbComerAqui.Location = new Point(87, 64);
+			rbComerAqui.Location = new Point(82, 27);
 			rbComerAqui.Name = "rbComerAqui";
 			rbComerAqui.Size = new Size(87, 19);
 			rbComerAqui.TabIndex = 19;
@@ -220,7 +223,7 @@
 			// 
 			rbParaLlevar.AutoSize = true;
 			rbParaLlevar.Font = new Font("Segoe UI", 9F);
-			rbParaLlevar.Location = new Point(180, 64);
+			rbParaLlevar.Location = new Point(175, 27);
 			rbParaLlevar.Name = "rbParaLlevar";
 			rbParaLlevar.Size = new Size(79, 19);
 			rbParaLlevar.TabIndex = 20;
@@ -273,7 +276,7 @@
 			label2.AutoSize = true;
 			label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			label2.ForeColor = Color.FromArgb(34, 34, 34);
-			label2.Location = new Point(11, 66);
+			label2.Location = new Point(6, 29);
 			label2.Margin = new Padding(1, 0, 1, 0);
 			label2.Name = "label2";
 			label2.Size = new Size(72, 15);

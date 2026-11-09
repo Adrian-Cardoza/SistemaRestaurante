@@ -65,7 +65,7 @@
 			lblPuesto.AutoSize = true;
 			lblPuesto.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblPuesto.ForeColor = Color.FromArgb(34, 34, 34);
-			lblPuesto.Location = new Point(202, 69);
+			lblPuesto.Location = new Point(266, 69);
 			lblPuesto.Name = "lblPuesto";
 			lblPuesto.Size = new Size(45, 15);
 			lblPuesto.TabIndex = 2;
@@ -75,26 +75,26 @@
 			// 
 			txtId.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 			txtId.Enabled = false;
-			txtId.Location = new Point(95, 43);
+			txtId.Location = new Point(85, 43);
 			txtId.Name = "txtId";
 			txtId.ReadOnly = true;
-			txtId.Size = new Size(396, 23);
+			txtId.Size = new Size(406, 23);
 			txtId.TabIndex = 3;
 			// 
 			// txtNombre
 			// 
 			txtNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			txtNombre.Location = new Point(95, 76);
+			txtNombre.Location = new Point(114, 76);
 			txtNombre.Name = "txtNombre";
-			txtNombre.Size = new Size(97, 23);
+			txtNombre.Size = new Size(117, 23);
 			txtNombre.TabIndex = 4;
 			// 
 			// txtPuesto
 			// 
 			txtPuesto.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			txtPuesto.Location = new Point(253, 66);
+			txtPuesto.Location = new Point(329, 66);
 			txtPuesto.Name = "txtPuesto";
-			txtPuesto.Size = new Size(97, 23);
+			txtPuesto.Size = new Size(117, 23);
 			txtPuesto.TabIndex = 5;
 			// 
 			// btnCrear
@@ -222,9 +222,9 @@
 			// txtUsuario
 			// 
 			txtUsuario.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			txtUsuario.Location = new Point(81, 109);
+			txtUsuario.Location = new Point(100, 109);
 			txtUsuario.Name = "txtUsuario";
-			txtUsuario.Size = new Size(97, 23);
+			txtUsuario.Size = new Size(117, 23);
 			txtUsuario.TabIndex = 16;
 			// 
 			// lblContraseña
@@ -232,7 +232,7 @@
 			lblContraseña.AutoSize = true;
 			lblContraseña.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
 			lblContraseña.ForeColor = Color.FromArgb(34, 34, 34);
-			lblContraseña.Location = new Point(200, 112);
+			lblContraseña.Location = new Point(264, 112);
 			lblContraseña.Name = "lblContraseña";
 			lblContraseña.Size = new Size(69, 15);
 			lblContraseña.TabIndex = 15;
@@ -252,9 +252,9 @@
 			// txtContraseña
 			// 
 			txtContraseña.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-			txtContraseña.Location = new Point(275, 109);
+			txtContraseña.Location = new Point(351, 109);
 			txtContraseña.Name = "txtContraseña";
-			txtContraseña.Size = new Size(97, 23);
+			txtContraseña.Size = new Size(117, 23);
 			txtContraseña.TabIndex = 17;
 			// 
 			// FrmEmpleados

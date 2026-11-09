@@ -125,7 +125,7 @@
 			// 
 			// btnAgregar
 			// 
-			btnAgregar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+			btnAgregar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
 			btnAgregar.BackColor = Color.MediumSeaGreen;
 			btnAgregar.FlatAppearance.BorderSize = 0;
 			btnAgregar.FlatStyle = FlatStyle.Flat;

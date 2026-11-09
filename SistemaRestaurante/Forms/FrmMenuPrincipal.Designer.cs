@@ -442,6 +442,7 @@
 			Controls.Add(pnlMenuLateral);
 			Controls.Add(stsEstado);
 			FormBorderStyle = FormBorderStyle.FixedSingle;
+			Icon = (Icon)resources.GetObject("$this.Icon");
 			Margin = new Padding(2);
 			MaximizeBox = false;
 			Name = "FrmMenuPrincipal";

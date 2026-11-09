@@ -53,17 +53,35 @@ namespace SistemaRestaurante.Service
 		public void ActualizarPedido(Pedido pedido)
 		{
 			using var ctx = new RestauranteContext();
-			Pedido existente = ctx.Pedidos.Find(pedido.Id) ?? throw new InvalidOperationException("Pedido no encontrado");
+
+			Pedido existente = ctx.Pedidos
+				.Include(p => p.DetallesPedidos)
+				.FirstOrDefault(p => p.Id == pedido.Id)
+				?? throw new InvalidOperationException("Pedido no encontrado");
+
 			if (existente.Estado == "Facturado" || existente.Estado == "Cancelado")
 			{
 				throw new InvalidOperationException($"No se puede modificar un pedido en estado '{existente.Estado}'.");
 			}
 
 			Validar(ctx, pedido);
+
 			existente.IdMesa = pedido.IdMesa;
 			existente.IdEmpleado = pedido.IdEmpleado;
 			existente.IdCliente = pedido.IdCliente;
 			existente.Estado = pedido.Estado;
+
+			ctx.DetallesPedidos.RemoveRange(existente.DetallesPedidos);
+
+			foreach (var detalle in pedido.DetallesPedidos)
+			{
+				existente.DetallesPedidos.Add(new DetallePedido
+				{
+					IdPedido = existente.Id,
+					IdProducto = detalle.IdProducto,
+					Cantidad = detalle.Cantidad
+				});
+			}
 			ctx.SaveChanges();
 		}
 

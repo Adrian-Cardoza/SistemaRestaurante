@@ -79,8 +79,9 @@ namespace SistemaRestaurante.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("DUI")
-                        .HasColumnType("int");
+                    b.Property<string>("DUI")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -96,7 +97,7 @@ namespace SistemaRestaurante.Migrations
                         {
                             Id = 1,
                             Correo = "juan.perez@example.com",
-                            DUI = 12345678,
+                            DUI = "12345678",
                             Nombre = "Juan Perez"
                         });
                 });

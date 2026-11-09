@@ -1,4 +1,5 @@
-﻿using SistemaRestaurante.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante.Data;
 using SistemaRestaurante.Models;
 using SistemaRestaurante.Service;
 using System.ComponentModel;
@@ -34,11 +35,97 @@ namespace SistemaRestaurante.Forms
 		{
 			rbComerAqui.Checked = true;
 			dtpFecha.Value = DateTime.Now;
+			dgvPedidos.CellClick += dgvPedidos_CellClick;
 		}
 
 		private void RefrescarListaPedidos(string filtro = "")
 		{
-			dgvPedidos.DataSource = _pedidoService.ListaPedidos(filtro);
+			using (var ctx = new RestauranteContext())
+			{
+				var query = ctx.Pedidos.AsQueryable();
+
+				if (!string.IsNullOrWhiteSpace(filtro))
+				{
+					query = query.Where(p => p.Cliente.Nombre.Contains(filtro) || p.Estado.Contains(filtro));
+				}
+
+				var pedidos = query
+					.OrderByDescending(p => p.Fecha)
+					.Take(5)
+					.Select(p => new
+					{
+						Id = p.Id,
+						Mesa = p.Mesa != null ? p.Mesa.Numero.ToString() : "Llevar",
+						Empleado = p.Empleado.Nombre,
+						Cliente = p.Cliente.Nombre,
+						DetalleProductos = string.Join(", ", p.DetallesPedidos.Select(d => $"{d.Cantidad}x {d.Productos.Nombre}")),
+						Estado = p.Estado,
+						Fecha = p.Fecha
+					})
+					.ToList();
+
+				dgvPedidos.DataSource = pedidos;
+				dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+				if (dgvPedidos.Columns["Id"] != null) dgvPedidos.Columns["Id"].FillWeight = 40;
+				if (dgvPedidos.Columns["Mesa"] != null) dgvPedidos.Columns["Mesa"].FillWeight = 50;
+				if (dgvPedidos.Columns["DetalleProductos"] != null) dgvPedidos.Columns["DetalleProductos"].FillWeight = 150;
+			}
+		}
+
+		private void dgvPedidos_CellClick(object sender, DataGridViewCellEventArgs e)
+		{
+			if (e.RowIndex >= 0 && dgvPedidos.CurrentRow != null)
+			{
+				try
+				{
+					int idPedido = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
+
+					using (var ctx = new RestauranteContext())
+					{
+						// Incluimos los detalles y el producto asociado
+						var pedidoDb = ctx.Pedidos
+							.Include(p => p.DetallesPedidos)
+							.ThenInclude(d => d.Productos)
+							.FirstOrDefault(p => p.Id == idPedido);
+
+						if (pedidoDb != null)
+						{
+							// 1. Cargar datos generales
+							cmbCliente.SelectedValue = pedidoDb.IdCliente;
+							cmbEstado.SelectedItem = pedidoDb.Estado;
+							dtpFecha.Value = pedidoDb.Fecha;
+
+							if (pedidoDb.IdMesa.HasValue)
+							{
+								rbComerAqui.Checked = true;
+								cmbMesa.SelectedValue = pedidoDb.IdMesa.Value;
+							}
+							else
+							{
+								rbParaLlevar.Checked = true;
+							}
+
+							// 2. Cargar los productos del pedido seleccionado en el carrito/grid de detalles
+							_listaDetalles.Clear();
+							foreach (var detalle in pedidoDb.DetallesPedidos)
+							{
+								_listaDetalles.Add(new DetallePedidoItem
+								{
+									IdProducto = detalle.IdProducto,
+									Nombre = detalle.Productos?.Nombre ?? "Producto",
+									PrecioUnitario = detalle.Productos?.Precio ?? 0,
+									Cantidad = detalle.Cantidad
+								});
+							}
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show($"Error al cargar el pedido seleccionado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
 		}
 
 		private void CargarCatalogoProductos()
@@ -177,9 +264,11 @@ namespace SistemaRestaurante.Forms
 					return;
 				}
 
-				if (cmbCliente.SelectedIndex < 0)
+				// Validar que se haya escrito un nombre de cliente
+				string nombreCliente = cmbCliente.Text.Trim();
+				if (string.IsNullOrWhiteSpace(nombreCliente))
 				{
-					MessageBox.Show("Debe seleccionar un Cliente.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					MessageBox.Show("Debe ingresar o seleccionar un Cliente.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					return;
 				}
 
@@ -189,31 +278,63 @@ namespace SistemaRestaurante.Forms
 					return;
 				}
 
-				var pedido = new Pedido
+				int clienteId;
+
+				using (var ctx = new RestauranteContext())
 				{
-					IdMesa = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null,
-					IdCliente = Convert.ToInt32(cmbCliente.SelectedValue),
+					// 1. Buscar si el cliente ya existe por su nombre (ignorando mayúsculas/minúsculas)
+					var clienteExistente = ctx.Clientes
+						.FirstOrDefault(c => c.Nombre.ToLower() == nombreCliente.ToLower());
 
-					IdEmpleado = SesionActual.IdEmpleadoLogueado,
-
-					Estado = cmbEstado.Text.Trim(),
-					Fecha = dtpFecha.Value,
-					DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
+					if (clienteExistente != null)
 					{
-						IdProducto = d.IdProducto,
-						Cantidad = d.Cantidad
-					}).ToList()
-				};
+						// Si ya existe, usamos su ID
+						clienteId = clienteExistente.Id;
+					}
+					else
+					{
+						// Si NO existe, lo creamos automáticamente solo con el nombre
+						var nuevoCliente = new Cliente
+						{
+							Nombre = nombreCliente,
+							DUI = null,
+							Correo = null
+						};
 
-				_pedidoService.CrearPedido(pedido);
-				MessageBox.Show("Pedido creado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						ctx.Clientes.Add(nuevoCliente);
+						ctx.SaveChanges();
+
+						clienteId = nuevoCliente.Id;
+					}
+
+					// 2. Creamos el pedido usando el ID del cliente (existente o recién creado)
+					var pedido = new Pedido
+					{
+						IdMesa = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null,
+						IdCliente = clienteId,
+						IdEmpleado = SesionActual.IdEmpleadoLogueado,
+						Estado = cmbEstado.Text.Trim(),
+						Fecha = dtpFecha.Value,
+						DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
+						{
+							IdProducto = d.IdProducto,
+							Cantidad = d.Cantidad
+						}).ToList()
+					};
+
+					_pedidoService.CrearPedido(pedido);
+				}
+
+				MessageBox.Show("Pedido y cliente procesados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 				RefrescarListaPedidos();
+				CargarClientes();
 				LimpiarFormulario();
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				string mensajeDetallado = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+				MessageBox.Show($"Error al guardar: {mensajeDetallado}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -227,19 +348,34 @@ namespace SistemaRestaurante.Forms
 
 			try
 			{
+				if (_listaDetalles.Count == 0)
+				{
+					MessageBox.Show("El pedido debe contener al menos un producto.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return;
+				}
+
 				int id = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
+
 				var pedido = new Pedido
 				{
 					Id = id,
 					IdMesa = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null,
 					IdCliente = Convert.ToInt32(cmbCliente.SelectedValue),
+					IdEmpleado = SesionActual.IdEmpleadoLogueado,
 					Estado = cmbEstado.Text.Trim(),
-					Fecha = dtpFecha.Value
+					Fecha = dtpFecha.Value,
+					DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
+					{
+						IdProducto = d.IdProducto,
+						Cantidad = d.Cantidad
+					}).ToList()
 				};
 
 				_pedidoService.ActualizarPedido(pedido);
 				MessageBox.Show("Pedido actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
 				RefrescarListaPedidos();
+				LimpiarFormulario();
 			}
 			catch (Exception ex)
 			{
@@ -350,6 +486,56 @@ namespace SistemaRestaurante.Forms
 			cmbEstado.SelectedItem = "Pendiente";
 			_listaDetalles.Clear();
 			CargarCatalogoProductos();
+		}
+
+		private void btnCancelar_Click(object sender, EventArgs e)
+		{
+			//LimpiarFormulario();
+			//dgvPedidos.ClearSelection();
+			//MessageBox.Show("Acción cancelada. Formulario limpiado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+			if (dgvPedidos.CurrentRow == null)
+			{
+				MessageBox.Show("Seleccione un pedido del historial para cancelar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+
+			var confirm = MessageBox.Show("¿Está seguro de cancelar este pedido?",
+										   "Confirmar cancelación",
+										   MessageBoxButtons.YesNo,
+										   MessageBoxIcon.Question);
+
+			if (confirm == DialogResult.No) return;
+
+			try
+			{
+				int idPedido = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
+
+				using (var ctx = new RestauranteContext())
+				{
+					var pedido = ctx.Pedidos.Find(idPedido);
+					if (pedido != null)
+					{
+						if (pedido.Estado == "Facturado")
+						{
+							MessageBox.Show("No se puede cancelar un pedido que ya ha sido facturado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+							return;
+						}
+
+						pedido.Estado = "Cancelado";
+						ctx.SaveChanges();
+
+						MessageBox.Show("El pedido ha sido cancelado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+						RefrescarListaPedidos();
+						LimpiarFormulario();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Error al cancelar el pedido: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 

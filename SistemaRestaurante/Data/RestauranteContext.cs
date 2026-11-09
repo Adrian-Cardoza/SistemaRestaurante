@@ -19,9 +19,9 @@ namespace SistemaRestaurante.Data
 		public DbSet<Factura> Facturas { get; set; }
 		public DbSet<Producto> Productos { get; set; }
 		public DbSet<DetallePedido> DetallesPedidos { get; set; }
-        public DbSet<Categoria> Categorias { get; set; }
+		public DbSet<Categoria> Categorias { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{
 			if (!options.IsConfigured)
 			{
@@ -85,7 +85,7 @@ namespace SistemaRestaurante.Data
 				{
 					Id = 1,
 					Nombre = "Juan Perez",
-					DUI = 12345678,
+					DUI = "12345678",
 					Correo = "juan.perez@example.com",
 				}
 			);
@@ -108,14 +108,14 @@ namespace SistemaRestaurante.Data
 					Rol = "Mesero"
 				}
 			);
-            modelBuilder.Entity<Categoria>().HasData(
+			modelBuilder.Entity<Categoria>().HasData(
 				new Categoria { ID = 1, Nombre = "Entradas" },
 				new Categoria { ID = 2, Nombre = "Desayunos" },
-                new Categoria { ID = 3, Nombre = "Platos fuertes" },
-                new Categoria { ID = 4, Nombre = "Postres" },
-				new Categoria { ID = 5, Nombre =  "Bebidas" }
+				new Categoria { ID = 3, Nombre = "Platos fuertes" },
+				new Categoria { ID = 4, Nombre = "Postres" },
+				new Categoria { ID = 5, Nombre = "Bebidas" }
 
 			);
-        }
+		}
 	}
 }
