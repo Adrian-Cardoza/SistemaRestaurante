@@ -23,6 +23,11 @@ namespace SistemaRestaurante.Forms
 				"dd 'de' MMMM 'de' yyyy", region);
 		}
 
+		private void FrmMenuPrin_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Application.Exit();
+		}
+
 		private void ActualizarTituloPestaña(string titulo)
 		{
 			Control[] controles = this.Controls.Find("IblTituloPestaña", true);

@@ -448,6 +448,7 @@
 			Name = "FrmMenuPrincipal";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Sistema de Restaurante";
+			FormClosed += FrmMenuPrin_FormClosed;
 			Load += FrmMenuPrincipal_Load;
 			stsEstado.ResumeLayout(false);
 			stsEstado.PerformLayout();
