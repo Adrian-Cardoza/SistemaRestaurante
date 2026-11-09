@@ -79,7 +79,8 @@ namespace SistemaRestaurante.Service
 				{
 					IdPedido = existente.Id,
 					IdProducto = detalle.IdProducto,
-					Cantidad = detalle.Cantidad
+					Cantidad = detalle.Cantidad,
+					PrecioUnitario = detalle.PrecioUnitario
 				});
 			}
 			ctx.SaveChanges();

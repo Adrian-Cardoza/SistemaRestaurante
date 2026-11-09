@@ -1,4 +1,5 @@
-﻿using SistemaRestaurante.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SistemaRestaurante.Data;
 
 namespace SistemaRestaurante.Forms
 {
@@ -93,24 +94,35 @@ namespace SistemaRestaurante.Forms
 			using (var db = new RestauranteContext())
 			{
 				var pedidos = db.Pedidos
-			.OrderByDescending(p => p.Fecha)
-			.Take(5)
-			.Select(p => new
-			{
-				Id = p.Id,
-				Mesa = p.Mesa.Numero,
-				Empleado = p.Empleado.Nombre,
-				Cliente = p.Cliente.Nombre,
-				Fecha = p.Fecha,
-				Estado = p.Estado
-			})
-			.ToList();
+					.Include(p => p.Mesa)
+					.Include(p => p.Empleado)
+					.Include(p => p.Cliente)
+					.OrderByDescending(p => p.Fecha)
+					.Take(5)
+					.ToList()
+					.Select(p => new
+					{
+						Id = p.Id,
 
+						Mesa = p.Mesa != null
+							? p.Mesa.Numero.ToString()
+							: "Para llevar",
+
+						Empleado = p.Empleado != null
+							? p.Empleado.Nombre
+							: "No asignado",
+
+						Cliente = p.Cliente != null
+							? p.Cliente.Nombre
+							: "Cliente general",
+
+						Fecha = p.Fecha,
+						Estado = p.Estado
+					})
+					.ToList();
+
+				dgvPedidos.AutoGenerateColumns = true;
 				dgvPedidos.DataSource = pedidos;
-
-				dgvPedidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-				dgvPedidos.Columns["Id"].FillWeight = 40;
-				dgvPedidos.Columns["Mesa"].FillWeight = 50;
 			}
 		}
 	}

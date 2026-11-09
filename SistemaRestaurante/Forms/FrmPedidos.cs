@@ -114,7 +114,7 @@ namespace SistemaRestaurante.Forms
 								{
 									IdProducto = detalle.IdProducto,
 									Nombre = detalle.Productos?.Nombre ?? "Producto",
-									PrecioUnitario = detalle.Productos?.Precio ?? 0,
+									PrecioUnitario = detalle.PrecioUnitario,
 									Cantidad = detalle.Cantidad
 								});
 							}
@@ -318,7 +318,8 @@ namespace SistemaRestaurante.Forms
 						DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
 						{
 							IdProducto = d.IdProducto,
-							Cantidad = d.Cantidad
+							Cantidad = d.Cantidad,
+							PrecioUnitario = d.PrecioUnitario
 						}).ToList()
 					};
 

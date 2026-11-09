@@ -30,6 +30,5 @@ namespace SistemaRestaurante.Models
 		public string MetodoPago { get; set; }
 
 		public Pedido? Pedidos { get; set; }
-		public Producto? Productos { get; set; }
 	}
 }

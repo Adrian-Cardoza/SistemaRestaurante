@@ -7,7 +7,6 @@ namespace SistemaRestaurante.Models
 		[Key]
 		public int Id { get; set; }
 
-		[Required]
 		public int? IdMesa { get; set; }
 
 		[Required]

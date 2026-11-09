@@ -202,9 +202,6 @@ namespace SistemaRestaurante.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("ProductosID")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Subtotal")
                         .HasColumnType("decimal(10,2)");
 
@@ -215,8 +212,6 @@ namespace SistemaRestaurante.Migrations
 
                     b.HasIndex("IdPedido")
                         .IsUnique();
-
-                    b.HasIndex("ProductosID");
 
                     b.ToTable("Facturas");
                 });
@@ -258,9 +253,6 @@ namespace SistemaRestaurante.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<int?>("FacturaId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
@@ -270,12 +262,10 @@ namespace SistemaRestaurante.Migrations
                     b.Property<int>("IdEmpleado")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdMesa")
+                    b.Property<int?>("IdMesa")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FacturaId");
 
                     b.HasIndex("IdCliente");
 
@@ -337,26 +327,16 @@ namespace SistemaRestaurante.Migrations
             modelBuilder.Entity("SistemaRestaurante.Models.Factura", b =>
                 {
                     b.HasOne("SistemaRestaurante.Models.Pedido", "Pedidos")
-                        .WithOne()
+                        .WithOne("Factura")
                         .HasForeignKey("SistemaRestaurante.Models.Factura", "IdPedido")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SistemaRestaurante.Models.Producto", "Productos")
-                        .WithMany()
-                        .HasForeignKey("ProductosID");
-
                     b.Navigation("Pedidos");
-
-                    b.Navigation("Productos");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>
                 {
-                    b.HasOne("SistemaRestaurante.Models.Factura", "Factura")
-                        .WithMany()
-                        .HasForeignKey("FacturaId");
-
                     b.HasOne("SistemaRestaurante.Models.Cliente", "Cliente")
                         .WithMany("Pedidos")
                         .HasForeignKey("IdCliente")
@@ -372,14 +352,11 @@ namespace SistemaRestaurante.Migrations
                     b.HasOne("SistemaRestaurante.Models.Mesa", "Mesa")
                         .WithMany("Pedidos")
                         .HasForeignKey("IdMesa")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Cliente");
 
                     b.Navigation("Empleado");
-
-                    b.Navigation("Factura");
 
                     b.Navigation("Mesa");
                 });
@@ -418,6 +395,8 @@ namespace SistemaRestaurante.Migrations
             modelBuilder.Entity("SistemaRestaurante.Models.Pedido", b =>
                 {
                     b.Navigation("DetallesPedidos");
+
+                    b.Navigation("Factura");
                 });
 
             modelBuilder.Entity("SistemaRestaurante.Models.Producto", b =>

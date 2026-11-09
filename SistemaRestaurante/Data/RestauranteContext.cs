@@ -55,7 +55,7 @@ namespace SistemaRestaurante.Data
 			// Relación Pedidos (1) -> Facturas (1)
 			modelBuilder.Entity<Factura>()
 				.HasOne(f => f.Pedidos)
-				.WithOne()
+				.WithOne(p => p.Factura)
 				.HasForeignKey<Factura>(f => f.IdPedido)
 				.OnDelete(DeleteBehavior.Restrict);
 
