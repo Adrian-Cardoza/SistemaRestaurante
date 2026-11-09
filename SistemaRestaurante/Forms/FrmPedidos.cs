@@ -12,6 +12,7 @@ namespace SistemaRestaurante.Forms
 	{
 		private readonly PedidoService _pedidoService;
 		private BindingList<DetallePedidoItem> _listaDetalles;
+		private int? _idPedidoEnEdicion = null;
 
 		public FrmPedidos()
 		{
@@ -21,13 +22,11 @@ namespace SistemaRestaurante.Forms
 
 			this.Load += FrmPedidos_Load;
 
-			RefrescarListaPedidos();
 			CargarClientes();
 			CargarMesas();
 			CargarEstados();
 			ConfigurarGridHistorialPedidos();
 			ConfigurarGridCarrito();
-
 			CargarCatalogoProductos();
 		}
 
@@ -36,6 +35,8 @@ namespace SistemaRestaurante.Forms
 			rbComerAqui.Checked = true;
 			dtpFecha.Value = DateTime.Now;
 			dgvPedidos.CellClick += dgvPedidos_CellClick;
+			RefrescarListaPedidos();
+			LimpiarFormulario();
 		}
 
 		private void RefrescarListaPedidos(string filtro = "")
@@ -81,9 +82,10 @@ namespace SistemaRestaurante.Forms
 				{
 					int idPedido = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
 
+					_idPedidoEnEdicion = idPedido;
+
 					using (var ctx = new RestauranteContext())
 					{
-						// Incluimos los detalles y el producto asociado
 						var pedidoDb = ctx.Pedidos
 							.Include(p => p.DetallesPedidos)
 							.ThenInclude(d => d.Productos)
@@ -91,7 +93,6 @@ namespace SistemaRestaurante.Forms
 
 						if (pedidoDb != null)
 						{
-							// 1. Cargar datos generales
 							cmbCliente.SelectedValue = pedidoDb.IdCliente;
 							cmbEstado.SelectedItem = pedidoDb.Estado;
 							dtpFecha.Value = pedidoDb.Fecha;
@@ -106,7 +107,6 @@ namespace SistemaRestaurante.Forms
 								rbParaLlevar.Checked = true;
 							}
 
-							// 2. Cargar los productos del pedido seleccionado en el carrito/grid de detalles
 							_listaDetalles.Clear();
 							foreach (var detalle in pedidoDb.DetallesPedidos)
 							{
@@ -138,7 +138,6 @@ namespace SistemaRestaurante.Forms
 
 			foreach (var prod in productos)
 			{
-				// 1. Panel contenedor de la tarjeta
 				Panel card = new Panel
 				{
 					Width = 140,
@@ -148,7 +147,6 @@ namespace SistemaRestaurante.Forms
 					Margin = new Padding(8)
 				};
 
-				// 2. Nombre del producto
 				Label lblNombre = new Label
 				{
 					Text = prod.Nombre,
@@ -160,7 +158,6 @@ namespace SistemaRestaurante.Forms
 				};
 				card.Controls.Add(lblNombre);
 
-				// 3. Precio del producto
 				Label lblPrecio = new Label
 				{
 					Text = $"${prod.Precio:F2}",
@@ -170,7 +167,6 @@ namespace SistemaRestaurante.Forms
 				};
 				card.Controls.Add(lblPrecio);
 
-				// 4. Etiqueta de cantidad seleccionada
 				Label lblCantidad = new Label
 				{
 					Text = prod.Disponible ? "0" : "N/D",
@@ -183,7 +179,6 @@ namespace SistemaRestaurante.Forms
 				};
 				card.Controls.Add(lblCantidad);
 
-				// 5. Botón Menos (-)
 				Button btnMenos = new Button
 				{
 					Text = "-",
@@ -195,7 +190,6 @@ namespace SistemaRestaurante.Forms
 				};
 				card.Controls.Add(btnMenos);
 
-				// 6. Botón Más (+)
 				Button btnMas = new Button
 				{
 					Text = "+",
@@ -256,6 +250,26 @@ namespace SistemaRestaurante.Forms
 
 		private void btnGuardar_Click(object sender, EventArgs e)
 		{
+			if (_idPedidoEnEdicion != null)
+			{
+				MessageBox.Show("Estás en modo de edición. Usa el botón 'Editar' para guardar los cambios o limpia el formulario para crear un pedido nuevo.",
+								"Estás en edición",
+								MessageBoxButtons.OK,
+								MessageBoxIcon.Warning);
+				return;
+			}
+
+			int idMesaSeleccionada = Convert.ToInt32(cmbMesa.SelectedValue);
+			using (var ctxCheck = new RestauranteContext())
+			{
+				var mesaActual = ctxCheck.Mesas.Find(idMesaSeleccionada);
+				if (mesaActual != null && mesaActual.Estado == "Ocupada")
+				{
+					MessageBox.Show($"La mesa #{mesaActual.Numero} ya se encuentra Ocupada. Seleccione otra mesa disponible.", "Mesa no disponible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return;
+				}
+			}
+
 			try
 			{
 				if (rbComerAqui.Checked && cmbMesa.SelectedIndex < 0)
@@ -264,7 +278,6 @@ namespace SistemaRestaurante.Forms
 					return;
 				}
 
-				// Validar que se haya escrito un nombre de cliente
 				string nombreCliente = cmbCliente.Text.Trim();
 				if (string.IsNullOrWhiteSpace(nombreCliente))
 				{
@@ -282,18 +295,15 @@ namespace SistemaRestaurante.Forms
 
 				using (var ctx = new RestauranteContext())
 				{
-					// 1. Buscar si el cliente ya existe por su nombre (ignorando mayúsculas/minúsculas)
 					var clienteExistente = ctx.Clientes
 						.FirstOrDefault(c => c.Nombre.ToLower() == nombreCliente.ToLower());
 
 					if (clienteExistente != null)
 					{
-						// Si ya existe, usamos su ID
 						clienteId = clienteExistente.Id;
 					}
 					else
 					{
-						// Si NO existe, lo creamos automáticamente solo con el nombre
 						var nuevoCliente = new Cliente
 						{
 							Nombre = nombreCliente,
@@ -303,11 +313,10 @@ namespace SistemaRestaurante.Forms
 
 						ctx.Clientes.Add(nuevoCliente);
 						ctx.SaveChanges();
-
 						clienteId = nuevoCliente.Id;
 					}
 
-					// 2. Creamos el pedido usando el ID del cliente (existente o recién creado)
+					// 1. Creamos el pedido
 					var pedido = new Pedido
 					{
 						IdMesa = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null,
@@ -324,12 +333,33 @@ namespace SistemaRestaurante.Forms
 					};
 
 					_pedidoService.CrearPedido(pedido);
+
+					// 2. SI ES UN PEDIDO EN MESA, CAMBIAMOS EL ESTADO DE LA MESA A "Ocupada"
+					if (rbComerAqui.Checked)
+					{
+						idMesaSeleccionada = Convert.ToInt32(cmbMesa.SelectedValue);
+						var mesaDb = ctx.Mesas.Find(idMesaSeleccionada);
+						if (mesaDb != null)
+						{
+							// Si el pedido se creó como Facturado o Cancelado, la mesa queda Disponible. Si es Pendiente, se Ocupa.
+							if (pedido.Estado == "Facturado" || pedido.Estado == "Cancelado")
+							{
+								mesaDb.Estado = "Disponible";
+							}
+							else
+							{
+								mesaDb.Estado = "Ocupada";
+							}
+							ctx.SaveChanges();
+						}
+					}
 				}
 
-				MessageBox.Show("Pedido y cliente procesados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show("Pedido registrado y mesa marcada como ocupada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 				RefrescarListaPedidos();
 				CargarClientes();
+				CargarMesas();
 				LimpiarFormulario();
 			}
 			catch (Exception ex)
@@ -341,7 +371,7 @@ namespace SistemaRestaurante.Forms
 
 		private void btnEditar_Click(object sender, EventArgs e)
 		{
-			if (dgvPedidos.CurrentRow == null)
+			if (_idPedidoEnEdicion == null)
 			{
 				MessageBox.Show("Seleccione un pedido del historial para editar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
@@ -355,27 +385,74 @@ namespace SistemaRestaurante.Forms
 					return;
 				}
 
-				int id = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
+				string nuevoEstado = cmbEstado.Text.Trim();
+				int? nuevaMesaId = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null;
 
-				var pedido = new Pedido
+				using (var ctx = new RestauranteContext())
 				{
-					Id = id,
-					IdMesa = rbComerAqui.Checked ? Convert.ToInt32(cmbMesa.SelectedValue) : (int?)null,
-					IdCliente = Convert.ToInt32(cmbCliente.SelectedValue),
-					IdEmpleado = SesionActual.IdEmpleadoLogueado,
-					Estado = cmbEstado.Text.Trim(),
-					Fecha = dtpFecha.Value,
-					DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
-					{
-						IdProducto = d.IdProducto,
-						Cantidad = d.Cantidad
-					}).ToList()
-				};
+					// 1. Buscamos el pedido original en la BD antes de modificarlo para saber qué mesa tenía antes
+					var pedidoDb = ctx.Pedidos
+						.Include(p => p.DetallesPedidos)
+						.FirstOrDefault(p => p.Id == _idPedidoEnEdicion.Value);
 
-				_pedidoService.ActualizarPedido(pedido);
-				MessageBox.Show("Pedido actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					if (pedidoDb != null)
+					{
+						int? mesaAnteriorId = pedidoDb.IdMesa;
+
+						// 2. Actualizamos los datos del pedido
+						pedidoDb.IdMesa = nuevaMesaId;
+						pedidoDb.IdCliente = Convert.ToInt32(cmbCliente.SelectedValue);
+						pedidoDb.IdEmpleado = SesionActual.IdEmpleadoLogueado;
+						pedidoDb.Estado = nuevoEstado;
+						pedidoDb.Fecha = dtpFecha.Value;
+
+						// Actualizar detalles (remover viejos y agregar nuevos)
+						ctx.DetallesPedidos.RemoveRange(pedidoDb.DetallesPedidos);
+						foreach (var detalle in _listaDetalles)
+						{
+							pedidoDb.DetallesPedidos.Add(new DetallePedido
+							{
+								IdPedido = pedidoDb.Id,
+								IdProducto = detalle.IdProducto,
+								Cantidad = detalle.Cantidad,
+								PrecioUnitario = detalle.PrecioUnitario
+							});
+						}
+
+						// 3. GESTIÓN INTELIGENTE DE ESTADOS DE LAS MESAS
+
+						// Si el pedido anterior estaba en una mesa, evaluamos si hay que liberarla
+						if (mesaAnteriorId.HasValue)
+						{
+							// Si cambió de mesa o si el pedido ahora está Facturado/Cancelado, liberamos la mesa vieja
+							if (mesaAnteriorId != nuevaMesaId || nuevoEstado == "Facturado" || nuevoEstado == "Cancelado")
+							{
+								var mesaAntigua = ctx.Mesas.Find(mesaAnteriorId.Value);
+								if (mesaAntigua != null)
+								{
+									mesaAntigua.Estado = "Disponible";
+								}
+							}
+						}
+
+						// Si la nueva configuración mantiene el pedido en mesa y está Pendiente, la marcamos Ocupada
+						if (nuevaMesaId.HasValue && nuevoEstado != "Facturado" && nuevoEstado != "Cancelado")
+						{
+							var mesaNueva = ctx.Mesas.Find(nuevaMesaId.Value);
+							if (mesaNueva != null)
+							{
+								mesaNueva.Estado = "Ocupada";
+							}
+						}
+
+						ctx.SaveChanges();
+					}
+				}
+
+				MessageBox.Show("Pedido actualizado y estados de mesa sincronizados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 				RefrescarListaPedidos();
+				CargarMesas();
 				LimpiarFormulario();
 			}
 			catch (Exception ex)
@@ -432,7 +509,10 @@ namespace SistemaRestaurante.Forms
 				DataPropertyName = "PrecioUnitario",
 				HeaderText = "P. Unit",
 				Width = 65,
-				DefaultCellStyle = { Format = "C2" }
+				DefaultCellStyle = {
+					Format = "C2",
+					FormatProvider = System.Globalization.CultureInfo.GetCultureInfo("es-SV")
+				}
 			});
 
 			dgvDetalles.DataSource = _listaDetalles;
@@ -462,7 +542,7 @@ namespace SistemaRestaurante.Forms
 
 				if (dgvPedidos.Columns["Id"] != null) dgvPedidos.Columns["Id"].FillWeight = 40;
 				if (dgvPedidos.Columns["Mesa"] != null) dgvPedidos.Columns["Mesa"].FillWeight = 50;
-				if (dgvPedidos.Columns["DetalleProductos"] != null) dgvPedidos.Columns["DetalleProductos"].FillWeight = 150; // Damos más espacio para los productos
+				if (dgvPedidos.Columns["DetalleProductos"] != null) dgvPedidos.Columns["DetalleProductos"].FillWeight = 150;
 			}
 		}
 
@@ -482,61 +562,19 @@ namespace SistemaRestaurante.Forms
 
 		private void LimpiarFormulario()
 		{
+			_idPedidoEnEdicion = null;
 			cmbMesa.SelectedIndex = -1;
 			cmbCliente.SelectedIndex = -1;
 			cmbEstado.SelectedItem = "Pendiente";
 			_listaDetalles.Clear();
+			dgvPedidos.ClearSelection();
 			CargarCatalogoProductos();
 		}
 
 		private void btnCancelar_Click(object sender, EventArgs e)
 		{
-			//LimpiarFormulario();
-			//dgvPedidos.ClearSelection();
-			//MessageBox.Show("Acción cancelada. Formulario limpiado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-			if (dgvPedidos.CurrentRow == null)
-			{
-				MessageBox.Show("Seleccione un pedido del historial para cancelar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				return;
-			}
-
-			var confirm = MessageBox.Show("¿Está seguro de cancelar este pedido?",
-										   "Confirmar cancelación",
-										   MessageBoxButtons.YesNo,
-										   MessageBoxIcon.Question);
-
-			if (confirm == DialogResult.No) return;
-
-			try
-			{
-				int idPedido = Convert.ToInt32(dgvPedidos.CurrentRow.Cells["Id"].Value);
-
-				using (var ctx = new RestauranteContext())
-				{
-					var pedido = ctx.Pedidos.Find(idPedido);
-					if (pedido != null)
-					{
-						if (pedido.Estado == "Facturado")
-						{
-							MessageBox.Show("No se puede cancelar un pedido que ya ha sido facturado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-							return;
-						}
-
-						pedido.Estado = "Cancelado";
-						ctx.SaveChanges();
-
-						MessageBox.Show("El pedido ha sido cancelado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-						RefrescarListaPedidos();
-						LimpiarFormulario();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"Error al cancelar el pedido: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
+			LimpiarFormulario();
+			MessageBox.Show("Acción cancelada. Formulario limpiado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 

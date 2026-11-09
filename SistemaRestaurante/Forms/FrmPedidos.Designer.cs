@@ -172,7 +172,7 @@
 			// btnCancelar
 			// 
 			btnCancelar.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-			btnCancelar.BackColor = Color.IndianRed;
+			btnCancelar.BackColor = SystemColors.ActiveCaption;
 			btnCancelar.FlatAppearance.BorderSize = 0;
 			btnCancelar.FlatStyle = FlatStyle.Flat;
 			btnCancelar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -181,7 +181,7 @@
 			btnCancelar.Name = "btnCancelar";
 			btnCancelar.Size = new Size(97, 45);
 			btnCancelar.TabIndex = 14;
-			btnCancelar.Text = "Cancelar";
+			btnCancelar.Text = "Nuevo";
 			btnCancelar.UseVisualStyleBackColor = false;
 			btnCancelar.Click += btnCancelar_Click;
 			// 
