@@ -368,8 +368,10 @@ namespace SistemaRestaurante.Forms
 					DetallesPedidos = _listaDetalles.Select(d => new DetallePedido
 					{
 						IdProducto = d.IdProducto,
-						Cantidad = d.Cantidad
-					}).ToList()
+						Cantidad = d.Cantidad,
+                        PrecioUnitario = d.PrecioUnitario
+
+                    }).ToList()
 				};
 
 				_pedidoService.ActualizarPedido(pedido);
