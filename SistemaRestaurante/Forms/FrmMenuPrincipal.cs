@@ -124,14 +124,14 @@ namespace SistemaRestaurante.Forms
 			AbrirFormularioHijo(new FrmProductos(), "Inventario de Platillos y Productos");
 		}
 
-        private void btnReportes_Click(object sender, EventArgs e)
-        {
-            AbrirFormularioHijo(
-                new FrmReportes(),
-                "Módulo de Reportes y Estadísticas");
-        }
+		private void btnReportes_Click(object sender, EventArgs e)
+		{
+			AbrirFormularioHijo(
+				new FrmReportes(),
+				"Módulo de Reportes y Estadísticas");
+		}
 
-        private void btnConfiguracion_Click(object sender, EventArgs e)
+		private void btnConfiguracion_Click(object sender, EventArgs e)
 		{
 			AbrirFormularioHijo(new FrmEmpleados(), "Configuración de Personal y Usuarios");
 		}
@@ -187,7 +187,6 @@ namespace SistemaRestaurante.Forms
 				this.Hide();
 				FrmLogin login = new FrmLogin();
 				login.ShowDialog();
-				this.Close();
 			}
 		}
 

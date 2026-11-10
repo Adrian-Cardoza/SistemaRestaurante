@@ -131,7 +131,7 @@
 			AcceptButton = btnIngresar;
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
-			BackColor = Color.FromArgb(244, 246, 249);
+			BackColor = Color.White;
 			ClientSize = new Size(484, 311);
 			Controls.Add(pictureBox1);
 			Controls.Add(btnCancelar);
