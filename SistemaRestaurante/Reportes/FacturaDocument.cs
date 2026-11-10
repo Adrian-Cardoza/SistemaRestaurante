@@ -36,7 +36,7 @@ namespace SistemaRestaurante.Reportes
                 page.Margin(30);
 
                 page.DefaultTextStyle(x =>
-                    x.FontSize(10).FontFamily(Fonts.Calibri));
+                    x.FontSize(10).FontFamily("Lato"));
 
                 // Encabezado
                 page.Header().Element(ComponerEncabezado);

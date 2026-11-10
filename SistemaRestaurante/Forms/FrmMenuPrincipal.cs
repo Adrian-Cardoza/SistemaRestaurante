@@ -124,12 +124,14 @@ namespace SistemaRestaurante.Forms
 			AbrirFormularioHijo(new FrmProductos(), "Inventario de Platillos y Productos");
 		}
 
-		private void btnReportes_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show("El módulo de reportes y estadísticas está en desarrollo.", "Reportes", MessageBoxButtons.OK, MessageBoxIcon.Information);
-		}
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            AbrirFormularioHijo(
+                new FrmReportes(),
+                "Módulo de Reportes y Estadísticas");
+        }
 
-		private void btnConfiguracion_Click(object sender, EventArgs e)
+        private void btnConfiguracion_Click(object sender, EventArgs e)
 		{
 			AbrirFormularioHijo(new FrmEmpleados(), "Configuración de Personal y Usuarios");
 		}
